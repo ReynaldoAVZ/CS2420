@@ -26,34 +26,32 @@ public class MathVector {
 	 *
 	 * @param data - a 2D array to hold the numbers of the vector
 	 * @throws IllegalArgumentException if the numbers of rows and columns in the input 2D array is not
-	 *         compatible with a row or column vector
+	 *                                  compatible with a row or column vector
 	 */
 	public MathVector(double[][] data) {
-		if(data.length == 0)
+		if (data.length == 0)
 			throw new IllegalArgumentException("Number of rows must be positive.");
-		if(data[0].length == 0)
+		if (data[0].length == 0)
 			throw new IllegalArgumentException("Number of columns must be positive.");
 
-		if(data.length == 1) {
+		if (data.length == 1) {
 			// This is a row vector with length = number of columns.
 			this.isRowVector = true;
 			this.vectorSize = data[0].length;
-		}
-		else if(data[0].length == 1) {
+		} else if (data[0].length == 1) {
 			// This is a column vector with length = number of rows.
 			this.isRowVector = false;
 			this.vectorSize = data.length;
-		}
-		else
+		} else
 			throw new IllegalArgumentException("Either the number of rows or the number of columns must be 1.");
 
 		// Create the array and copy data over.
-		if(this.isRowVector)
+		if (this.isRowVector)
 			this.data = new double[1][vectorSize];
 		else
 			this.data = new double[vectorSize][1];
-		for(int i=0; i < this.data.length; i++) {
-			for (int j=0; j < this.data[0].length; j++) {
+		for (int i = 0; i < this.data.length; i++) {
+			for (int j = 0; j < this.data[0].length; j++) {
 				this.data[i][j] = data[i][j];
 			}
 		}
@@ -67,15 +65,14 @@ public class MathVector {
 	 * @param other - another vector to compare
 	 */
 	public boolean equals(Object other) {
-		if(!(other instanceof MathVector))
+		if (!(other instanceof MathVector))
 			return false;
 
-		MathVector otherVec = (MathVector)other;
+		MathVector otherVec = (MathVector) other;
 
 		if (otherVec.isRowVector != this.isRowVector) {
 			return false;
-		}
-		else if (this.isRowVector){
+		} else if (this.isRowVector) {
 			for (int i = 0; i < this.vectorSize; i++) {
 				double vectorVal1 = this.data[0][i];
 				double vectorVal2 = otherVec.data[0][i];
@@ -83,8 +80,7 @@ public class MathVector {
 					return false;
 				}
 			}
-		}
-		else {
+		} else {
 			double vectorVal1;
 			double vectorVal2;
 			for (int i = 0; i < this.vectorSize; i++) {
@@ -104,17 +100,24 @@ public class MathVector {
 	public MathVector transpose() {
 		// if the given vector is a column vector
 		if (!this.isRowVector) {
+			// declare a new row vector
 			MathVector newVec = new MathVector(new double[1][this.vectorSize]);
+			// for loop to go through all the values of this.data
 			for (int i = 0; i < this.vectorSize; i++) {
 				newVec.data[0][i] = this.data[i][0];
 			}
+			// return the newVec back to function call
 			return newVec;
 		}
+		// if the given vector is a row vector
 		else {
+			// declare a new column vector
 			MathVector tempVec = new MathVector(new double[this.vectorSize][1]);
+			// for loop to go through all the values of this.data
 			for (int i = 0; i < this.vectorSize; i++) {
 				tempVec.data[i][0] = this.data[0][i];
 			}
+			// return the newVec back to function call
 			return tempVec;
 		}
 	}
@@ -124,27 +127,38 @@ public class MathVector {
 	 *
 	 * @param other - another vector to be added to this vector
 	 * @throws IllegalArgumentException if the other vector and this vector are not both row vectors of
-	 *         the same length or column vectors of the same length
+	 *                                  the same length or column vectors of the same length
 	 */
 	public MathVector add(MathVector other) {
+		// check and make sure that both this vector and other vector are either row or column vector
 		if (this.isRowVector != other.isRowVector) {
 			throw new IllegalArgumentException("Vectors are not both columns or rows.");
 		}
+		// check and make sure that both vectors are the same size
 		if (this.vectorSize != other.vectorSize) {
 			throw new IllegalArgumentException("Vector sizes are not the same.");
 		}
+		// declare new vector that will be returned
 		MathVector sumVec;
+		// if this vector is a row vector
 		if (this.isRowVector) {
+			// specify the dimensions of sumVec and create it into a row vector
 			sumVec = new MathVector(new double[1][this.vectorSize]);
+			// for loop to get all the values in this and other vector
 			for (int i = 0; i < this.vectorSize; i++) {
 				sumVec.data[0][i] = this.data[0][i] + other.data[0][i];
 			}
-		} else {
+		}
+		// if this vector is a column vector
+		else {
+			// specify the dimensions of sumVec and create it into a column vector
 			sumVec = new MathVector(new double[this.vectorSize][1]);
+			// for loop to get all the values in this and other vector
 			for (int i = 0; i < this.vectorSize; i++) {
 				sumVec.data[i][0] = this.data[i][0] + other.data[i][0];
 			}
 		}
+		// return sumVec to function call
 		return sumVec;
 	}
 
@@ -153,7 +167,7 @@ public class MathVector {
 	 *
 	 * @param other - another vector to be combined with this vector to produce the dot product
 	 * @throws IllegalArgumentException if the other vector and this vector are not both row vectors of
-	 *         the same length or column vectors of the same length
+	 *                                  the same length or column vectors of the same length
 	 */
 	public double dotProduct(MathVector other) {
 		if (this.isRowVector != other.isRowVector) {
@@ -172,7 +186,7 @@ public class MathVector {
 			for (int i = 0; i < dotVec.vectorSize; i++) {
 				dotProductVal = dotProductVal + dotVec.data[0][i];
 			}
-        } else {
+		} else {
 			dotVec = new MathVector(new double[this.vectorSize][1]);
 			for (int i = 0; i < this.vectorSize; i++) {
 				dotVec.data[i][0] = this.data[i][0] * other.data[i][0];
@@ -180,9 +194,9 @@ public class MathVector {
 			for (int i = 0; i < dotVec.vectorSize; i++) {
 				dotProductVal = dotProductVal + dotVec.data[i][0];
 			}
-        }
-        return dotProductVal;
-    }
+		}
+		return dotProductVal;
+	}
 
 	/**
 	 * Computes and returns this vector's magnitude (also known as a vector's length) .
@@ -218,14 +232,35 @@ public class MathVector {
 	 * Generates and returns a textual representation of this vector.
 	 * For example, "1.0 2.0 3.0 4.0 5.0" for a sample row vector of length 5 and
 	 * "1.0
-	 *  2.0
-	 *  3.0
-	 *  4.0
-	 *  5.0" for a sample column vector of length 5.
-	 *  In both cases, notice the lack of a newline or space after the last number.
+	 * 2.0
+	 * 3.0
+	 * 4.0
+	 * 5.0" for a sample column vector of length 5.
+	 * In both cases, notice the lack of a newline or space after the last number.
 	 */
 	public String toString() {
-		// STUDENT: Fill in with code to accomplish the method contract above, do not return null.
-		return null;
+		String string = "";
+		if (this.isRowVector) {
+			for (int i = 0; i < this.vectorSize; i++) {
+				if (i == this.vectorSize - 1) {
+					string = string + this.data[0][i];
+				}
+				else {
+					string = string + this.data[0][i] + " ";
+				}
+			}
+			return string;
+		}
+		else {
+			for (int i = 0; i < this.vectorSize; i++) {
+				if (i == this.vectorSize - 1) {
+					string = string + this.data[i][0];
+				}
+				else {
+					string = string + this.data[i][0] + "\n";
+				}
+			}
+			return string;
+		}
 	}
 }

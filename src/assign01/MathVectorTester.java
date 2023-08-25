@@ -37,6 +37,7 @@ public class MathVectorTester {
 
 		// Creates a column vector with five elements: -11.0, 2.5, 36.0, -3.14, 7.1
 		colVec = new MathVector(new double[][]{{-11}, {2.5}, {36}, {-3.14}, {7.1}});
+
 	}
 
 	@AfterEach
@@ -55,9 +56,11 @@ public class MathVectorTester {
 
 	@Test
 	public void createVectorFromBadArray() {
-	  double arr[][] = {{1, 2}, {3, 4}};
-	  assertThrows(IllegalArgumentException.class, () -> { new MathVector(arr); });
-	  // NOTE: The code above is an example of a lambda expression. See Lab 1 for more info.
+		double arr[][] = {{1, 2}, {3, 4}};
+		assertThrows(IllegalArgumentException.class, () -> {
+			new MathVector(arr);
+		});
+		// NOTE: The code above is an example of a lambda expression. See Lab 1 for more info.
 	}
 
 	@Test
@@ -68,8 +71,10 @@ public class MathVectorTester {
 
 	@Test
 	public void addRowAndColVectors() {
-	  assertThrows(IllegalArgumentException.class, () -> { rowVec.add(colVec); });
-	  // NOTE: The code above is an example of a lambda expression. See Lab 1 for more info.
+		assertThrows(IllegalArgumentException.class, () -> {
+			rowVec.add(colVec);
+		});
+		// NOTE: The code above is an example of a lambda expression. See Lab 1 for more info.
 	}
 
 	@Test
@@ -103,5 +108,37 @@ public class MathVectorTester {
 		assertEquals(resultStr, colVec.toString());
 	}
 
-	// STUDENT: Add more unit tests to completely and robustly test your MathVector class.
+	@Test
+	public void vectorWithZeroElements() {
+		MathVector zeroVec = new MathVector(new double[][]{{0, 0, 0}});
+		assertTrue(zeroVec.equals(new MathVector(new double[][]{{0, 0, 0}})));
+	}
 }
+/*
+	@Test
+	public void emptyVectorEquality() {
+		MathVector emptyVec1 = new MathVector(new double[][]{{}});
+		MathVector emptyVec2 = new MathVector(new double[][]{{}});
+		assertThrows(IllegalArgumentException.class, () -> {
+			new MathVector(new double[][]{{}});
+		});
+	}
+
+	@Test
+	public void transposeEmptyVector() {
+	}
+	@Test
+	public void addEmptyVectors() {
+	}
+	@Test
+	public void dotProductEmptyVectors() {
+	}
+	@Test
+	public void normalizeEmptyVector() {
+	}
+	@Test
+	public void vectorToStringWithEmptyVector() {
+	}
+}
+
+ */
