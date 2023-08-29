@@ -204,12 +204,18 @@ public class MathVector {
 	public double magnitude() {
 		double magnitudeVal = 0;
 		if (!this.isRowVector) {
-			this.transpose();
+			for (int i = 0; i < this.vectorSize; i++) {
+				double tempVal = this.data[i][0];
+				tempVal = tempVal * tempVal;
+				magnitudeVal = magnitudeVal + tempVal;
+			}
 		}
-		for (int i = 0; i < this.vectorSize; i++) {
-			double tempVal = this.data[0][i];
-			tempVal = tempVal * tempVal;
-			magnitudeVal = magnitudeVal + tempVal;
+		else {
+			for (int i = 0; i < this.vectorSize; i++) {
+				double tempVal = this.data[0][i];
+				tempVal = tempVal * tempVal;
+				magnitudeVal = magnitudeVal + tempVal;
+			}
 		}
 		return Math.sqrt(magnitudeVal);
 	}
@@ -218,14 +224,31 @@ public class MathVector {
 	 * Generates and returns a normalized version of this vector.
 	 */
 	public MathVector normalize() {
-		if (!this.isRowVector) {
-			this.transpose();
-		}
 		double length = this.magnitude();
-		for (int i = 0; i < this.vectorSize; i++) {
-			this.data[0][i] = this.data[0][i] / length;
+		MathVector newVec;
+		if (!this.isRowVector) {
+			newVec = new MathVector(new double[this.vectorSize][1]);
+			for (int i = 0; i < this.vectorSize; i++) {
+				if (this.data[i][0] == 0 && length == 0) {
+					throw new IllegalArgumentException("Cannot do division of 0 / 0. Results in NaN");
+				}
+				else {
+					newVec.data[i][0] = this.data[i][0] / length;
+				}
+			}
 		}
-		return this;
+		else {
+			newVec = new MathVector(new double[1][this.vectorSize]);
+			for (int i = 0; i < this.vectorSize; i++) {
+				if (this.data[0][i] == 0 && length == 0) {
+					throw new IllegalArgumentException("Cannot do division of 0 / 0. Results in NaN");
+				}
+				else {
+					newVec.data[0][i] = this.data[0][i] / length;
+				}
+			}
+		}
+		return newVec;
 	}
 
 	/**
@@ -249,8 +272,7 @@ public class MathVector {
 					string = string + this.data[0][i] + " ";
 				}
 			}
-			return string;
-		}
+        }
 		else {
 			for (int i = 0; i < this.vectorSize; i++) {
 				if (i == this.vectorSize - 1) {
@@ -260,7 +282,7 @@ public class MathVector {
 					string = string + this.data[i][0] + "\n";
 				}
 			}
-			return string;
-		}
-	}
+        }
+        return string;
+    }
 }
