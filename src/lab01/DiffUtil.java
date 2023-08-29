@@ -15,15 +15,15 @@ public class DiffUtil {
 	 * @param arr - input array of integers
 	 * @throws IllegalArgumentException - if the array contains less than two items
 	 */
-	public static int findSmallestDiff(int[] a) {
-		if (a.length < 2)
+	public static int findSmallestDiff(int[] arr) {
+		if (arr.length < 2)
 			throw new IllegalArgumentException("Array must be > 1 element");
 
-		int diff = Math.abs(a[0] - a[1]);
+		int diff = Math.abs(arr[0] - arr[1]);
 
-		for (int i = 0; i < a.length; i++)
-			for (int j = i + 1; j < a.length; j++) {
-				int tmp_diff = Math.abs(a[i] - a[j]);
+		for (int i = 0; i < arr.length; i++)
+			for (int j = i + 1; j < arr.length; j++) {
+				int tmp_diff = Math.abs(arr[i] - arr[j]);
 
 				if (tmp_diff < diff)
 					diff = tmp_diff;
