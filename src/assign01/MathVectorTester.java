@@ -293,15 +293,3 @@ public class MathVectorTester {
 		assertEquals(singleColVec.toString(), resultStr);
 	}
 }
-/*
-
-	@Test
-	public void dotProductEmptyVectors() {
-	}
-	@Test
-	public void normalizeEmptyVector() {
-	}
-
-}
-
- */
