@@ -40,6 +40,7 @@ public class MathVectorTester {
 
 		// Creates a row vector with three elements: 3.0, 1.0, 2.0
 		colVecTranspose = new MathVector(new double[][]{{-11, 2.5, 36, -3.14, 7.1}});
+
 		// Creates a column vector with five elements: -11.0, 2.5, 36.0, -3.14, 7.1\
 		fiveSumVec = new MathVector(new double[][]{{-11}, {2.5}, {36}, {-3.14}, {7.1}});
 
@@ -79,6 +80,12 @@ public class MathVectorTester {
 		// NOTE: The code above is an example of a lambda expression. See Lab 1 for more info.
 	}
 
+	@Test
+	public void emptyVectorCreation() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			new MathVector(new double[][]{{}});
+		});
+	}
 	@Test
 	public void transposeSmallRowVector() {
 		MathVector transposeResult = rowVec.transpose();
@@ -123,61 +130,113 @@ public class MathVectorTester {
 	}
 
 	@Test
-	public void dotProductSmallRowVectors() {
+	public void addZeroColVectors() {
+		MathVector addResult = zeroColVec.add(zeroColVec);
+		assertTrue(addResult.equals(zeroColVec));
+	}
+
+	@Test
+	public void addZeroRowVectors() {
+		MathVector addResult = zeroRowVec.add(zeroRowVec);
+		assertTrue(addResult.equals(zeroRowVec));
+	}
+
+	@Test
+	public void addSingleRowVec() {
+		MathVector addResult = singleColVec.add(singleColVec);
+		assertTrue(addResult.equals(new MathVector(new double[][]{{2}})));
+	}
+
+	@Test
+	public void addSingleColVec() {
+		MathVector addResult = singleRowVec.add(singleRowVec);
+		assertTrue(addResult.equals(new MathVector(new double[][] {{2}})));
+	}
+
+	@Test
+	public void addDifferentSizes() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			sumVec.add(zeroRowVec);
+		});
+	}
+	@Test
+	public void dotProductSmallRowVec() {
 		double dotProdResult = rowVec.dotProduct(unitVec);
 		assertEquals(dotProdResult, 3.0 * 1.0 + 1.0 * 1.0 + 2.0 * 1.0);
 	}
+
 	@Test
-	public void dotProductZeroAndNumberVector() {
+	public void dotProductSmallColVec() {
+		double dotProdResult = colVec.dotProduct(zeroColVec);
+		assertEquals(dotProdResult, 0);
+	}
+
+	@Test
+	public void dotProductColAndRowVec() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			colVec.dotProduct(zeroRowVec);
+		});
+	}
+
+	@Test
+	public void dotProductDifferentSizeVec() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			rowVec.dotProduct(zeroRowVec);
+		});
+	}
+
+	@Test
+	public void dotProductZeroAndNumberVec() {
 		double resultVal = zeroColVec.dotProduct(colVec);
 		assertEquals(0, resultVal);
 	}
 
 	@Test
-	public void dotProductZeroAndZeroVector(){
+	public void dotProductZeroAndZeroVec(){
 		double resultVal = zeroColVec.dotProduct(zeroColVec);
 		assertEquals(0, resultVal);
 	}
 
 	@Test
-	public void smallRowVectorLength() {
+	public void smallRowVecMagnitude() {
 		double vecLength = rowVec.magnitude();
 		assertEquals(vecLength, Math.sqrt(3.0 * 3.0 + 1.0 * 1.0 + 2.0 * 2.0));
 	}
-	@Test
-	public void magnitudeRowVector(){
-		double resultVal = rowVec.magnitude();
-		assertEquals(Math.sqrt(14), resultVal);
-	}
 
 	@Test
-	public void magnitudeColVector() {
+	public void colVecMagnitude() {
 		MathVector newVec = rowVec.transpose();
 		double resultVal = newVec.magnitude();
 		assertEquals(Math.sqrt(14), resultVal);
 	}
 	@Test
-	public void magnitudeZeroVector(){
+	public void zeroRowVecMagnitude() {
 		double resultVal = zeroRowVec.magnitude();
 		assertEquals(Math.sqrt(0), resultVal);
 	}
 
 	@Test
-	public void smallRowVectorNormalize() {
+	public void zeroColVecMagnitude() {
+		double resultVal = zeroColVec.magnitude();
+		assertEquals(0, resultVal);
+	}
+
+	@Test
+	public void smallRowVecNormalize() {
 		MathVector normalVec = rowVec.normalize();
 		double length = Math.sqrt(3.0 * 3.0 + 1.0 * 1.0 + 2.0 * 2.0);
 		assertTrue(normalVec.equals(new MathVector(new double[][]{{3.0 / length, 1.0 / length, 2.0 / length}})));
 	}
 
 	@Test
-	public void smallColVectorNormalize(){
+	public void smallColVecNormalize(){
 		MathVector normalVec = colVec.normalize();
 		double length = colVec.magnitude();
 		assertTrue(normalVec.equals(new MathVector(new double[][]{{-11 / length}, {2.5 / length}, {36 / length}, {-3.14 / length}, {7.1 / length}})));
 	}
 
 	@Test
-	public void singleRowVectorNormalize() {
+	public void singleRowVecNormalize() {
 		MathVector normalVec = singleRowVec.normalize();
 		double length = singleRowVec.magnitude();
 		assertTrue(normalVec.equals(new MathVector(new double[][]{{1 / length}})));
@@ -199,49 +258,40 @@ public class MathVectorTester {
 	}
 
 	@Test
-	public void smallColVectorToString() {
+	public void smallColVecToString() {
 		String resultStr = "-11.0\n2.5\n36.0\n-3.14\n7.1";
 		assertEquals(resultStr, colVec.toString());
 	}
 
 	@Test
-	public void smallZeroColVectorToString() {
+	public void smallRowVecToString() {
+		String resultStr = "3.0 1.0 2.0";
+		assertEquals(resultStr, rowVec.toString());
+	}
+	@Test
+	public void smallZeroColVecToString() {
 		String resultStr = "0.0\n0.0\n0.0\n0.0\n0.0";
 		assertEquals(zeroColVec.toString(), resultStr);
 	}
 
 	@Test
-	public void smallZeroRowVectorToString() {
+	public void smallZeroRowVecToString() {
 		String resultStr = "0.0 0.0 0.0 0.0 0.0";
 		assertEquals(zeroRowVec.toString(), resultStr);
 	}
 
 	@Test
-	public void singleValueRowVectorToString(){
+	public void singleValueRowVecToString(){
 		String resultStr = "1.0";
 		assertEquals(singleRowVec.toString(), resultStr);
 	}
 
 	@Test
-	public void singleValueColVectorToString(){
+	public void singleValueColVecToString(){
 		MathVector singleColVec = singleRowVec.transpose();
 		String resultStr = "1.0";
 		assertEquals(singleColVec.toString(), resultStr);
 	}
-
-	@Test
-	public void vectorWithZeroElements() {
-		MathVector zeroVec = new MathVector(new double[][]{{0, 0, 0}});
-		assertTrue(zeroVec.equals(new MathVector(new double[][]{{0, 0, 0}})));
-	}
-
-	@Test
-	public void emptyVectorEquality() {
-		assertThrows(IllegalArgumentException.class, () -> {
-			new MathVector(new double[][]{{}});
-		});
-	}
-
 }
 /*
 
