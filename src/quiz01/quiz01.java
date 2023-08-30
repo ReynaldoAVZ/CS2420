@@ -82,12 +82,12 @@ public class quiz01 {
 
         for (int x = 0; x < 100; x++) {
             System.out.println("Hello, World.");
-            for (int y = 0; y < 100; y++) {
-                System.out.println("Hello, World.");
-                for (int z = 0; z < 100; z++) {
-                    System.out.println("Hello, World.");
-                }
-            }
+        }
+        for (int y = 0; y < 100; y++) {
+            System.out.println("Hello, World.");
+        }
+        for (int z = 0; z < 100; z++) {
+            System.out.println("Hello, World.");
         }
         /*
         Which code snippet prints Hello, World. more times?
