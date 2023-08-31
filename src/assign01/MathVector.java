@@ -6,7 +6,7 @@ package assign01;
  * In a column vector, the numbers are written vertically (eg, `{{1}, {2}, {3}, {4}}`).
  *
  * @author Aaron Wood and Reynaldo Villarreal Zambrano
- * @version 2023-08-28
+ * @version 2023-08-31
  */
 public class MathVector {
 

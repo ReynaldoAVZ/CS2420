@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
  *                 incorrectly returns true).
  *
  * @author Aaron Wood and Reynaldo Villarreal Zambrano
- * @version 2023-08-28
+ * @version 2023-08-31
  */
 public class MathVectorTester {
 
