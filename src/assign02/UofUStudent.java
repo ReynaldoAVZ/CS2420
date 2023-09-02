@@ -1,10 +1,12 @@
 package assign02;
 
+import assign01.MathVector;
+
 /**
  * This class represents a University of Utah student, in which the uNID cannot
  * change once the student is created.  Note that each student's uNID is unique.
  * 
- * @author Aaron Wood and ??
+ * @author Aaron Wood and Reynaldo Villarreal Zambrano and Mikhail Ahmed
  * @version 2023-08-31 
  */
 public class UofUStudent {
@@ -78,9 +80,20 @@ public class UofUStudent {
 	 * @return true if the other object is a UofUStudent type and is equal to this student, 
 	 *         false otherwise
 	 */
-	public boolean equals(Object other) {		
-		// FILL IN -- do not return false unless appropriate
-		return false;
+	public boolean equals(Object other) {
+		// check if other object is an instance of UofUStudent
+		if (!(other instanceof UofUStudent)) {
+			return false;
+		}
+		// cast otherObject as a type of UofUStudent
+		UofUStudent otherObject = (UofUStudent) other;
+		// do comparison
+		if (this.uNID == otherObject.uNID) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	/**
