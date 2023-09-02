@@ -1,9 +1,13 @@
 package assign02;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+//import static org.junit.Assert.assertEquals;
+//import static org.junit.Assert.assertFalse;
+//import static org.junit.Assert.assertNull;
+//import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,10 +17,11 @@ import java.util.ArrayList;
 /**
  * This class contains tests for CS2420ClassGeneric.
  * 
- * @author Aaron Wood and ??
+ * @author Aaron Wood and Reynaldo Villareal Zambrano and Mikhail Ahmed
  * @version 2023-08-31 
  */
 public class CS2420ClassGenericTester {
+
 
 	private CS2420ClassGeneric<String> emptyClass;
 	private CS2420ClassGeneric<MailingAddress> verySmallClass;
