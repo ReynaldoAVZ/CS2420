@@ -11,9 +11,13 @@ package assign02;
 
     private EmailAddress contactInfo;
     private double assignmentScore;
+    private double assignmentNumber;
     private double examScore;
+    private double examNumber;
     private double labScore;
+    private double labNumber;
     private double quizScore;
+    private double quizNumber;
     private double examWeight = .45;
     private double assignmentWeight = .35;
     private double quizWeight = .10;
@@ -39,15 +43,19 @@ package assign02;
         switch (category) {
             case "assignment":
                 this.assignmentScore = this.assignmentScore + score;
+                this.assignmentNumber = this.assignmentNumber + 1;
                 break;
             case "exam":
                 this.examScore = this.examScore + score;
+                this.examNumber = this.examNumber + 1;
                 break;
             case "lab":
                 this.labScore = this.labScore + score;
+                this.labNumber = this.labNumber + 1;
                 break;
             case "quiz":
                 this.quizScore = this.quizScore + score;
+                this.quizNumber = this.quizNumber + 1;
                 break;
             default:
                 break;
@@ -57,18 +65,18 @@ package assign02;
 
     public double computeFinalScore() {
         // check if exam score average is below 65%
-        if (this.examScore / 3 < 65) {
-            return this.examScore / 3;
+        if ((this.examScore / this.examNumber) < 65) {
+            return this.examScore / this.examNumber;
         }
         // check that each category has a score
         if (this.assignmentScore == 0 || this.examScore == 0 || this.labScore == 0 || this.quizScore == 0) {
             return 0.0;
         }
         // take all individual scores and multiply by their grade weight
-        this.assignmentScore = this.assignmentScore * this.assignmentWeight;
-        this.examScore = this.examScore * this.examWeight;
-        this.labScore = this.labScore * this.labWeight;
-        this.quizScore = this.quizScore * this.quizScore;
+        this.assignmentScore = (this.assignmentScore / this.assignmentNumber) * this.assignmentWeight;
+        this.examScore = (this.examScore / this.examNumber) * this.examWeight;
+        this.labScore = (this.labScore / this.labNumber) * this.labWeight;
+        this.quizScore = (this.quizScore / this.quizNumber) * this.quizWeight;
         // return final grade = sum of all scores
         return this.assignmentScore + this.examScore + this.labScore + this.quizScore;
     }

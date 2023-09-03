@@ -11,10 +11,10 @@ package assign02;
 public class CS2420StudentGeneric<Type> extends UofUStudent {
 
     private Type contactInfo;
-    private double assignmentScore;
-    private double examScore;
-    private double labScore;
-    private double quizScore;
+    private double assignmentScore = 0;
+    private double examScore = 0;
+    private double labScore = 0;
+    private double quizScore = 0;
     private double examWeight = .45;
     private double assignmentWeight = .35;
     private double quizWeight = .10;
@@ -58,25 +58,28 @@ public class CS2420StudentGeneric<Type> extends UofUStudent {
 
     public double computeFinalScore() {
         // check if exam score average is below 65%
-        if (this.examScore / 3 < 65) {
-            return this.examScore / 3;
+        if ((this.examScore * 100) < 65) {
+            return (this.examScore * 100);
         }
         // check that each category has a score
         if (this.assignmentScore == 0 || this.examScore == 0 || this.labScore == 0 || this.quizScore == 0) {
             return 0.0;
         }
         // take all individual scores and multiply by their grade weight
-        this.assignmentScore = this.assignmentScore * this.assignmentWeight;
-        this.examScore = this.examScore * this.examWeight;
-        this.labScore = this.labScore * this.labWeight;
-        this.quizScore = this.quizScore * this.quizScore;
+        double assignmentTotal = (this.assignmentScore * 100) * this.assignmentWeight;
+        double examTotal = (this.examScore * 100) * this.examWeight;
+        double labTotal = (this.labScore * 100) * this.labWeight;
+        double quizTotal = (this.quizScore * 100) * this.quizWeight;
+
         // return final grade = sum of all scores
-        return this.assignmentScore + this.examScore + this.labScore + this.quizScore;
+        double finalScore = assignmentTotal + examTotal + labTotal + quizTotal;
+        return finalScore;
     }
 
     public String computeFinalGrade() {
-        String finalGrade = "";
+        String finalGrade = "Did not assign a grade";
         double finalScore = computeFinalScore();
+        System.out.println(finalScore);
         if (finalScore == 0) {
             finalGrade = "N/A";
         } else if (finalScore <= 59.9) {

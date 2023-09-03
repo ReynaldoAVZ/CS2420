@@ -150,8 +150,28 @@ public class CS2420ClassGeneric<Type> {
      * Breaks ties in first names using uNIDs (ascending order).
      */
     public ArrayList<CS2420StudentGeneric<Type>> getOrderedByName() {
-        
-        return null;
+        ArrayList sortedList = new ArrayList<CS2420StudentGeneric<Type>>();
+        for (int i = 0; i < studentList.size(); i++) {
+            CS2420StudentGeneric student1 = studentList.get(i);
+            String studentLastName1 = student1.getLastName();
+            for (int j = i + 1; j < studentList.size(); j++) {
+                CS2420StudentGeneric student2 = studentList.get(j);
+                String studentLastName2 = student2.getLastName();
+                if (i == j) {
+                    continue;
+                }
+                else {
+                    if (studentLastName1.compareTo(studentLastName2) == -1) {
+                        CS2420StudentGeneric tempStudent = studentList.get(j);
+                        student2 = student1;
+                    }
+                    // compare the two string and determine if student1 is "less than" or "greater than" student2
+                    // if student1 is less than student2 (i.e student2's name comes first), place student1 after student2
+
+                }
+            }
+        }
+        return sortedList;
     }
     /**
      * Returns the list of CS 2420 students in this class with a final
@@ -216,8 +236,6 @@ public class CS2420ClassGeneric<Type> {
      same), then uNID
      * (if both names are the same). uNIDs are guaranteed to be unique.
      */
-    protected class OrderByName implements Comparator<CS2420StudentGeneric<Type>>
-    {
+    //protected class OrderByName implements Comparator<CS2420StudentGeneric<Type>> {
 
     }
-}

@@ -34,7 +34,10 @@ public class CS2420Class {
 	 *         false if the student was not added because they already exist in the collection
 	 */
 	public boolean addStudent(CS2420Student student) {
-		// FILL IN -- do not return false unless appropriate
+		if(!(this.studentList.contains(student))){
+			this.studentList.add(student);
+			return true;
+		}
 		return false;
 	}
 	
@@ -45,7 +48,11 @@ public class CS2420Class {
 	 * @return the CS 2420 student with the given uNID, or null if no such student exists in the collection
 	 */
 	public CS2420Student lookup(int uNID) {
-		// FILL IN -- do not return null, unless appropriate
+		for (CS2420Student student : this.studentList){
+			if (student.getUNID() == uNID){
+				return student;
+			}
+		}
 		return null;
 	}
 	
@@ -57,8 +64,13 @@ public class CS2420Class {
 	 * 	     or an empty list if no such students exist in the collection
 	 */
 	public ArrayList<CS2420Student> lookup(EmailAddress contactInfo) {
-		// FILL IN -- do not return null
-		return null;
+		ArrayList studentInfo = new ArrayList<CS2420Student>();
+		for (CS2420Student student : this.studentList) {
+			if (student.getContactInfo() == contactInfo) {
+				studentInfo.add(student);
+			}
+		}
+		return studentInfo;
 	}
 	
 	/**
@@ -72,7 +84,33 @@ public class CS2420Class {
 	 * @param category - the category in which to add the score
 	 */
 	public void addScore(int uNID, double score, String category) {
-		// FILL IN
+		// Iterate through the studentList to find the student with the given uNID
+		for (CS2420Student student : studentList) {
+			if (student.getUNID() == uNID) {
+				// Found the student with the matching uNID
+				// Use a switch statement to add the score to the appropriate category
+				switch (category) {
+					case "assignment":
+						student.addScore(score, "assignment");
+						break;
+					case "exam":
+						student.addScore(score, "exam");
+						break;
+					case "lab":
+						student.addScore(score, "lab");
+						break;
+					case "quiz":
+						student.addScore(score, "quiz");
+						break;
+					default:
+						// Invalid category, do nothing
+						break;
+				}
+				// Exit the loop since we found the student
+				return;
+			}
+		}
+		// If the loop completes without finding a student with the given uNID, do nothing
 	}
 	
 	/**
@@ -81,8 +119,15 @@ public class CS2420Class {
 	 * @return the average score, or 0 if there are no students in the collection
 	 */
 	public double computeClassAverage() {
-		// FILL IN -- do not return 0, unless appropriate
-		return 0;
+		double classAverage = 0;
+		if (this.studentList.size() == 0) {
+			return 0;
+		}
+		for (CS2420Student student : this.studentList) {
+			classAverage = classAverage + student.computeFinalScore();
+		}
+		classAverage = classAverage / this.studentList.size();
+		return classAverage;
 	}
 	
 	/**
@@ -91,8 +136,13 @@ public class CS2420Class {
 	 * @return the duplicate-free list of contact information, in any order
 	 */
 	public ArrayList<EmailAddress> getContactList() {
-		// FILL IN -- do not return null
-		return null;
+		ArrayList contactList = new ArrayList<EmailAddress>();
+		for (CS2420Student student : this.studentList) {
+			if (!(contactList.contains(student.getContactInfo()))) {
+				contactList.add(student.getContactInfo());
+			}
+		}
+		return contactList;
 	}
 	
 	/**

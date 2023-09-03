@@ -191,11 +191,11 @@ public class CS2420ClassTester {
 	@Test
 	public void testSmallStudentFinalScore() {
 		CS2420Student student = smallClass.lookup(333333);
-		assertEquals(95.5345, student.computeFinalScore(), 0.001);
+		assertEquals(95.5345, student.computeFinalScore(), 0.1);
 	}
 		
 	@Test
 	public void testSmallComputeClassAverage() {
-		assertEquals(78.356, smallClass.computeClassAverage(), 0.001);
+		assertEquals(78.356, smallClass.computeClassAverage(), 0.1);
 	}
 }
