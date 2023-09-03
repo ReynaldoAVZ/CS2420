@@ -6,8 +6,9 @@ package assign02;
  * contact information, scores on assignments, exams, labs, and quizzes.
  *
  * @author Reynaldo Villarreal Zambrano and Mikhail Ahmed
- * @version 2023-09-01
- */public class CS2420Student extends UofUStudent {
+ * @version 2023-09-04
+ */
+public class CS2420Student extends UofUStudent {
 
     private EmailAddress contactInfo;
     private double assignmentScore;
@@ -35,11 +36,25 @@ package assign02;
         this.contactInfo = contactInfo;
     }
 
+    /**
+     * Finds the students contact info and returns it.
+     *
+     * @return contactInfo
+     */
     public EmailAddress getContactInfo() {
         return this.contactInfo;
     }
 
+    /**
+     * Adds a score to a students grade in a specific category.
+     *
+     * @param score - a value between 0-100 to represent the grade they got on a specific category item
+     * @param category - either assignments, exam, lab, or quiz
+     */
     public void addScore(double score, String category) {
+        // perform a certain command depending on what the category is.
+        // in that category, add the score to that specific field, and
+        // increase the number of items added to that field by one
         switch (category) {
             case "assignment":
                 this.assignmentScore = this.assignmentScore + score;
@@ -57,12 +72,19 @@ package assign02;
                 this.quizScore = this.quizScore + score;
                 this.quizNumber = this.quizNumber + 1;
                 break;
+            // if String "category" was none of the above, do nothing
             default:
                 break;
         }
     }
 
-
+    /**
+     * Computes the final grade of a student using the grade that a student has gotten
+     * in the categories of "assignments", "exams", "quiz", and "lab" and uses the CS2420
+     * syllabus grade weights in order to calculate the final grade of the student.
+     *
+     * @return final Score - double value that represents the final grade of the student
+     */
     public double computeFinalScore() {
         // check if exam score average is below 65%
         if ((this.examScore / this.examNumber) < 65) {
@@ -81,9 +103,23 @@ package assign02;
         return finalAssignmentScore + finalExamScore + finalLabScore + finalQuizScore;
     }
 
+    /**
+     * Assigns a string representation of the final grade of a student based off the method
+     * computeFinalScore() in order to get a (double) finalScore value, and then using the cutoff
+     * percentages from the CS2420 syllabus, assigns a corresponding letter grade.
+     *
+     * @return finalGrade - string representation of the student's final grade based off (double) finalScore.
+     */
     public String computeFinalGrade() {
+        // declare empty string variable to hold final grade
         String finalGrade = "";
+        // find the numerical representation of the students final grade
         double finalScore = computeFinalScore();
+        // using the percentage cutoff's from the CS2420 syllabus, assign a letter grade
+        // to the student once their finalScore is in the right category. If they have a
+        // zero score in any of the categories ("assignments", "exams", "quiz", "labs")
+        // they automatically get a "N/A" final grade. Anything else, they will get assigned
+        // a letter grade representation.
         if (finalScore == 0) {
             finalGrade = "N/A";
         } else if (finalScore <= 59.9) {
@@ -111,6 +147,7 @@ package assign02;
         } else if (finalScore <= 100.0) {
             finalGrade = "A";
         }
+        // return the (String) finalGrade representation of their final grade in the class.
         return finalGrade;
     }
 }

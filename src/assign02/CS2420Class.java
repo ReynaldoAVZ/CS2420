@@ -8,12 +8,11 @@ import java.util.Scanner;
 
 /**
  * This Java class represents an unordered collection of University of Utah students enrolled in CS 2420.
- * 
  * NOTE: The word "Class" in the name of this Java class means a collection of students and should not 
  *       be confused with the Java term class, which is a blueprint for making objects.
  * 
- * @author Aaron Wood and ??
- * @version 2023-08-31 
+ * @author Aaron Wood and Reynaldo Villarreal Zambrano and Mikhail Ahmed
+ * @version 2023-09-03
  */
 public class CS2420Class {
 
@@ -34,10 +33,12 @@ public class CS2420Class {
 	 *         false if the student was not added because they already exist in the collection
 	 */
 	public boolean addStudent(CS2420Student student) {
+		// check if the student list already contains student that wants to be added
 		if(!(this.studentList.contains(student))){
 			this.studentList.add(student);
 			return true;
 		}
+		// return false if student was not added in list, i.e student was already in list
 		return false;
 	}
 	
@@ -48,34 +49,41 @@ public class CS2420Class {
 	 * @return the CS 2420 student with the given uNID, or null if no such student exists in the collection
 	 */
 	public CS2420Student lookup(int uNID) {
+		// iterate through the list of students
 		for (CS2420Student student : this.studentList){
+			// if the current student ID matches with the ID we're searching for
 			if (student.getUNID() == uNID){
 				return student;
 			}
 		}
+		// if no such student exists within the list
 		return null;
 	}
 	
 	/**
 	 * Retrieves the CS 2420 student(s) with the given contact information.
-	 * 
+	 *
 	 * @param contactInfo - contact information of student(s) to be retrieved
-	 * @return a list of the CS 2420 student(s) with the given contact information (in any order), 
+	 * @return a list of the CS 2420 student(s) with the given contact information (in any order),
 	 * 	     or an empty list if no such students exist in the collection
 	 */
 	public ArrayList<CS2420Student> lookup(EmailAddress contactInfo) {
-		ArrayList studentInfo = new ArrayList<CS2420Student>();
+		// create a new array list to contain all students whose contact info matches
+		ArrayList<CS2420Student> studentInfo = new ArrayList<CS2420Student>();
+		// iterate through all the students in student list
 		for (CS2420Student student : this.studentList) {
+			// if the contact info matches with what we're searching for
 			if (student.getContactInfo().equals(contactInfo)) {
+				// add the student to the new list
 				studentInfo.add(student);
 			}
 		}
+		// return the new student list
 		return studentInfo;
 	}
 	
 	/**
 	 * Adds an assignment, exam, lab, or quiz score for the CS 2420 student with the given uNID.
-	 * 
 	 * NOTE: If the category string is not one of "assignment", "exam", "lab", or "quiz", or
 	 *       if no student with the uNID exists in the collection, then this method has no effect.
 	 * 
@@ -119,14 +127,20 @@ public class CS2420Class {
 	 * @return the average score, or 0 if there are no students in the collection
 	 */
 	public double computeClassAverage() {
+		// dclare a classAverage variable that will be returned
 		double classAverage = 0;
-		if (this.studentList.size() == 0) {
+		// if there are no students in the list
+		if (this.studentList.isEmpty()) {
 			return 0;
 		}
+		// iterate through all the students in student list
 		for (CS2420Student student : this.studentList) {
+			// add the current students final score to the sum value
 			classAverage = classAverage + student.computeFinalScore();
 		}
+		// divide the sum value by the number of students that are in the student list
 		classAverage = classAverage / this.studentList.size();
+		// return the average
 		return classAverage;
 	}
 	
@@ -136,18 +150,22 @@ public class CS2420Class {
 	 * @return the duplicate-free list of contact information, in any order
 	 */
 	public ArrayList<EmailAddress> getContactList() {
-		ArrayList contactList = new ArrayList<EmailAddress>();
+		// create a new list containing all the contact information of students
+		ArrayList<EmailAddress> contactList = new ArrayList<EmailAddress>();
+		// iterate through all the students
 		for (CS2420Student student : this.studentList) {
+			// check for duplicates before adding the student to the contact list
 			if (!(contactList.contains(student.getContactInfo()))) {
+				// add the contact info of unique student
 				contactList.add(student.getContactInfo());
 			}
 		}
+		// return the contact list
 		return contactList;
 	}
 	
 	/**
 	 * Adds the students specified by the input file to the collection of students in CS 2420.
-	 * 
 	 * Assumes a very strict file format:
 	 *     -- first line: FirstName LastName (u0123456) userName@domainName
 	 *     -- second line: assignment scores, separated by blank spaces
@@ -155,7 +173,6 @@ public class CS2420Class {
 	 *     -- fourth line: lab scores, separated by blank spaces
 	 *     -- fifth line: quiz scores, separated by blank spaces
 	 *     -- sixth line ... : repeat of lines 1-5 for another student
-	 *     
 	 * Also assumes there are no duplicate students in the file.
 	 * 
 	 * @param filename - full or relative path to file containing student data

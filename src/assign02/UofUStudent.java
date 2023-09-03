@@ -1,7 +1,5 @@
 package assign02;
 
-import assign01.MathVector;
-
 /**
  * This class represents a University of Utah student, in which the uNID cannot
  * change once the student is created.  Note that each student's uNID is unique.

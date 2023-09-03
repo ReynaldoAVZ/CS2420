@@ -1,9 +1,5 @@
 package assign02;
 
-//import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertFalse;
-//import static org.junit.Assert.assertNull;
-//import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -12,16 +8,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
  * This class contains tests for CS2420ClassGeneric.
  * 
  * @author Aaron Wood and Reynaldo Villareal Zambrano and Mikhail Ahmed
- * @version 2023-08-31 
+ * @version 2023-09-04
  */
 public class CS2420ClassGenericTester {
-
 
 	private CS2420ClassGeneric<String> emptyClass;
 	private CS2420ClassGeneric<MailingAddress> verySmallClass;
@@ -93,7 +89,7 @@ public class CS2420ClassGenericTester {
 	
 	@Test
 	public void testEmptyLookupContactInfo() {
-		ArrayList<CS2420StudentGeneric> students = emptyClass.lookup("hello");
+		ArrayList<CS2420StudentGeneric<String>> students = emptyClass.lookup("hello");
 		assertEquals(0, students.size());
 	}
 	
@@ -126,7 +122,7 @@ public class CS2420ClassGenericTester {
 	@Test
 	public void testVerySmallLookupContactInfo() {
 		UofUStudent expectedStudent = new UofUStudent("Riley", "Nguyen", 4545454);
-		ArrayList<CS2420StudentGeneric> actualStudents = verySmallClass.lookup(
+		ArrayList<CS2420StudentGeneric<MailingAddress>> actualStudents = verySmallClass.lookup(
 				new MailingAddress("2044 State St.", "Lebanon", "PA", 17042));
 		assertEquals(1, actualStudents.size());
 		assertEquals(expectedStudent, actualStudents.get(0));
@@ -209,7 +205,7 @@ public class CS2420ClassGenericTester {
 	@Test
 	public void testVerySmallUpdateName() {
 		verySmallClass.lookup(1010101).updateName("John", "Doe");
-		ArrayList<CS2420StudentGeneric> students = verySmallClass.lookup(
+		ArrayList<CS2420StudentGeneric<MailingAddress>> students = verySmallClass.lookup(
 				new MailingAddress("101 Cherry St.", "Lebanon", "OH", 45036));
 		assertEquals("John", students.get(0).getFirstName());
 		assertEquals("Doe", students.get(0).getLastName());
@@ -219,7 +215,7 @@ public class CS2420ClassGenericTester {
 
 	@Test
 	public void testLargeLookupContactInfo() {
-		ArrayList<CS2420StudentGeneric> actualStudents = largeClass.lookup(new PhoneNumber("801-555-1234"));
+		ArrayList<CS2420StudentGeneric<PhoneNumber>> actualStudents = largeClass.lookup(new PhoneNumber("801-555-1234"));
 		assertEquals(100, actualStudents.size());
 	}
 	

@@ -1,10 +1,5 @@
 package assign02;
 
-//import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertFalse;
-//import static org.junit.Assert.assertNull;
-//import static org.junit.Assert.assertTrue;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * This class contains tests for CS2420Class.
  * 
- * @author Aaron Wood and ??
- * @version 2023-08-31 
+ * @author Aaron Wood and Reynaldo Villarreal Zambrano and Mikhail Ahmed
+ * @version 2023-09-04
  */
 public class CS2420ClassTester {
 
