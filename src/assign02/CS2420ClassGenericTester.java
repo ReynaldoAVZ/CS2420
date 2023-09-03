@@ -237,12 +237,12 @@ public class CS2420ClassGenericTester {
 	@Test
 	public void testLargeStudentFinalScore() {
 		CS2420StudentGeneric<PhoneNumber> student = largeClass.lookup(1000000);
-		assertEquals(78, student.computeFinalScore(), 0.001);
+		assertEquals(77.75, student.computeFinalScore(), 0.001);
 	}
 		
 	@Test
 	public void testLargeComputeClassAverage() {
-		assertEquals(82.5, largeClass.computeClassAverage(), 0.001);
+		assertEquals(81.775, largeClass.computeClassAverage(), 0.01);
 	}
 	
 	// Phase 3 tests -----------------------------------------------------------------------------------

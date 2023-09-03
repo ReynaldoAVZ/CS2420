@@ -66,7 +66,7 @@ public class CS2420Class {
 	public ArrayList<CS2420Student> lookup(EmailAddress contactInfo) {
 		ArrayList studentInfo = new ArrayList<CS2420Student>();
 		for (CS2420Student student : this.studentList) {
-			if (student.getContactInfo() == contactInfo) {
+			if (student.getContactInfo().equals(contactInfo)) {
 				studentInfo.add(student);
 			}
 		}

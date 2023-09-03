@@ -73,12 +73,12 @@ package assign02;
             return 0.0;
         }
         // take all individual scores and multiply by their grade weight
-        this.assignmentScore = (this.assignmentScore / this.assignmentNumber) * this.assignmentWeight;
-        this.examScore = (this.examScore / this.examNumber) * this.examWeight;
-        this.labScore = (this.labScore / this.labNumber) * this.labWeight;
-        this.quizScore = (this.quizScore / this.quizNumber) * this.quizWeight;
+        double finalAssignmentScore = (this.assignmentScore / this.assignmentNumber) * this.assignmentWeight;
+        double finalExamScore = (this.examScore / this.examNumber) * this.examWeight;
+        double finalLabScore = (this.labScore / this.labNumber) * this.labWeight;
+        double finalQuizScore = (this.quizScore / this.quizNumber) * this.quizWeight;
         // return final grade = sum of all scores
-        return this.assignmentScore + this.examScore + this.labScore + this.quizScore;
+        return finalAssignmentScore + finalExamScore + finalLabScore + finalQuizScore;
     }
 
     public String computeFinalGrade() {
