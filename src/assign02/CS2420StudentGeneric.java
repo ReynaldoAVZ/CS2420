@@ -38,11 +38,25 @@ public class CS2420StudentGeneric<Type> extends UofUStudent {
         this.contactInfo = contactInfo;
     }
 
+    /**
+     * Retrieves the contact information of the current student the method is called on.
+     *
+     * @return contactInfo - students (Type) contact information
+     */
     public Type getContactInfo() {
         return this.contactInfo;
     }
 
+    /**
+     * Add a score value to a specific category for the current student this method is called on.
+     *
+     * @param score - (double) score value that is added on to a specific field in student
+     * @param category - (String) category that holds either "assignment", "exam", "lab", or "quiz".
+     */
     public void addScore(double score, String category) {
+        // switch statement that adds a score value to a specific field in student object
+        // that is dependent on the string in category. if it's none of the accepted categories,
+        // do nothing
         switch (category) {
             case "assignment":
                 this.assignmentScore = this.assignmentScore + score;
@@ -65,7 +79,15 @@ public class CS2420StudentGeneric<Type> extends UofUStudent {
         }
     }
 
-
+    /**
+     * Computes the final score of the current student this method is called on. This is computed
+     * using the fields in the student object that correspond with their grades in each category. If
+     * their exam average is below 65%, automatically return that average as the students final grade.
+     *
+     * @return finalScore - the sum of the final score for each category in the student object with each field
+     *                      being multiplied with their respective grade weight according to the CS2420 syllabus
+     *                      grade policies.
+     */
     public double computeFinalScore() {
         // check if exam score average is below 65%
         if ((this.examScore / this.examNumber) < 65) {
@@ -81,12 +103,24 @@ public class CS2420StudentGeneric<Type> extends UofUStudent {
         double labScoreFinal = (this.labScore / this.labNumber) * this.labWeight;
         double quizScoreFinal = (this.quizScore / this.quizNumber) * this.quizWeight;
         // return final grade = sum of all scores
-        return assignmentScoreFinal + examScoreFinal + labScoreFinal + quizScoreFinal;
+        double finalScore = assignmentScoreFinal + examScoreFinal + labScoreFinal + quizScoreFinal;
+        return finalScore;
     }
 
+    /**
+     * This method computes the final grade of the student object that this method is called on. It does it
+     * by using computeFinalScore() to get a (double) finalScore value. This value is then used in a else-if structure
+     * to determine in what grade category the student should be assigned.
+     *
+     * @return finalGrade - (String) value that represents the final grade of the student object this method is called on.
+     */
     public String computeFinalGrade() {
+        // Declare a string to contain the student finalGrade
         String finalGrade = "Did not assign a grade";
+        // Attain the student final score using the computeFinalScore() method
         double finalScore = computeFinalScore();
+        // compares finalScore with the CS2420 syllabus grade ranges, and assigns
+        // a final letter grade dependent on where that finalScore value is in between.
         if (finalScore == 0) {
             finalGrade = "N/A";
         } else if (finalScore <= 59.9) {
@@ -114,6 +148,7 @@ public class CS2420StudentGeneric<Type> extends UofUStudent {
         } else if (finalScore <= 100.0) {
             finalGrade = "A";
         }
+        // return the (String) finalGrade value
         return finalGrade;
     }
 }

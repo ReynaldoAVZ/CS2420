@@ -89,6 +89,7 @@ public class UofUStudent {
         if (this.uNID == otherObject.uNID) {
             return true;
         }
+        // both object's uNID's are different
         else {
             return false;
         }

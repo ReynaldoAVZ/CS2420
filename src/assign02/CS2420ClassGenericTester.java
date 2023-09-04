@@ -109,6 +109,12 @@ public class CS2420ClassGenericTester {
 		ArrayList<String> contactList = emptyClass.getContactList();
 		assertEquals(0, contactList.size());
 	}
+	@Test
+	public void testAddStudentToEmpty(){
+		CS2420StudentGeneric<String> student = new CS2420StudentGeneric<String>("Michael", "Mouse", 1111119, "michaelMouse@disney.com");
+		emptyClass.addStudent(student);
+		assertEquals(1, emptyClass.getContactList().size());
+	}
 
 	// Very small CS 2420 class tests --------------------------------------------------------------------
 
@@ -150,7 +156,16 @@ public class CS2420ClassGenericTester {
 		student.addScore(89.2, "quiz");
 		assertEquals(0, student.computeFinalScore(), 0);
 	}
-	
+
+	@Test
+	public void testVerySmallStudentFinalScoreAll0() {
+		CS2420StudentGeneric<MailingAddress> student = verySmallClass.lookup(2323232);
+		student.addScore(0, "assignment");
+		student.addScore(0, "exam");
+		student.addScore(0, "quiz");
+		student.addScore(0, "lab");
+		assertEquals(0, student.computeFinalScore(), 0);
+	}
 	@Test
 	public void testVerySmallStudentFinalGradeNA() {
 		CS2420StudentGeneric<MailingAddress> student = verySmallClass.lookup(2323232);
