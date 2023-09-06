@@ -3,7 +3,13 @@ package assign02;
 import java.util.Random;
 
 
-
+/**
+ * This class contains a timer in order to test and record how long it takes for lookup(int uNID)
+ * from CS2420Class takes to run, as well as analyze the Big-O behavior -> O(N) where N is the problem size.
+ *
+ * @author Reynaldo Villarreal Zambrano and Mikhail Ahmed
+ * @version 2023-09-06
+ */
 public class CS2420ClassTimer {
     public static void main(String[] args) {
         Random randomNumberGenerator = new Random();

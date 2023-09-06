@@ -12,7 +12,7 @@ import java.util.Scanner;
  *       be confused with the Java term class, which is a blueprint for making objects.
  * 
  * @author Aaron Wood and Reynaldo Villarreal Zambrano and Mikhail Ahmed
- * @version 2023-09-03
+ * @version 2023-09-06
  */
 public class CS2420Class {
 

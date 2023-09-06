@@ -15,7 +15,7 @@ import java.util.ServiceConfigurationError;
  *       be confused with the Java term class, which is a blueprint for making objects.
  *
  * @author Aaron Wood and Reynaldo Villarreal and Mikhail Ahmed
- * @version 2023-09-03
+ * @version 2023-09-06
  */
 public class CS2420ClassGeneric<Type> {
 

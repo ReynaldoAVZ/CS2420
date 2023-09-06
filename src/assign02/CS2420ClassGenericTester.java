@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * This class contains tests for CS2420ClassGeneric.
  * 
  * @author Aaron Wood and Reynaldo Villareal Zambrano and Mikhail Ahmed
- * @version 2023-09-04
+ * @version 2023-09-06
  */
 public class CS2420ClassGenericTester {
 

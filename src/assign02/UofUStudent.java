@@ -5,7 +5,7 @@ package assign02;
  * change once the student is created.  Note that each student's uNID is unique.
  *
  * @author Aaron Wood and Reynaldo Villarreal Zambrano and Mikhail Ahmed
- * @version 2023-08-31
+ * @version 2023-09-06
  */
 public class UofUStudent {
 

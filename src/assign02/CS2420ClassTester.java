@@ -13,7 +13,7 @@ import java.util.Random;
  * This class contains tests for CS2420Class.
  * 
  * @author Aaron Wood and Reynaldo Villarreal Zambrano and Mikhail Ahmed
- * @version 2023-09-04
+ * @version 2023-09-06
  */
 public class CS2420ClassTester {
 
