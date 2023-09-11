@@ -1,13 +1,13 @@
 package assign03;
 
-import assign02.CS2420StudentGeneric;
-
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
 
 public class SimplePriorityQueue<E> implements PriorityQueue{
+
+    // Declaring object and primitive variables for Simple Priority Queue objects
     private E[] array;
 
     private int arrSize;
@@ -15,23 +15,41 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
 
     private int arrCount = 0;
 
+    /**
+     * These constructors instantiate SimplePriorityQueue Object without a Comparator.
+     */
     @SuppressWarnings("unchecked")
     public SimplePriorityQueue() {
         this.arrSize = 10;
         this.array = (E[]) new Object[this.arrSize];
     }
-
+    /**
+     * These constructors instantiate SimplePriorityQueue Object with a Comparator.
+     *
+     * @param cmp - The comparator object being passed in
+     */
     @SuppressWarnings("unchecked")
     public SimplePriorityQueue(Comparator<? super E> cmp){
         this.arrSize = 10;
         this.array = (E[]) new Object[this.arrSize];
         this.cmp = cmp;
     }
+
+    /**
+     * This method helps compare to objects without the use of the comparator, hence null. If there is a comparator,
+     * then the method uses the comparator.
+     *
+     * @param o1 The object variable being compared
+     * @param o2 The object variable being compared, returns 0 for the first object due to no comparison
+     * @return the integer based on the comparison
+     */
     @SuppressWarnings("unchecked")
     private int helpCompare (E o1, E o2){
+        // if comparator is null
         if (this.cmp == null)
             if(o2 == null)
                 return 0;
+        // Java's natural comparison due to comparator being null
             else
                 return ((Comparable<? super E>)o1).compareTo(o2);
 
@@ -39,6 +57,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
             if (o2 == null)
                 return 0;
             else
+                // returns the comparator's result
                 return cmp.compare(o1, o2);
     }
 
@@ -51,10 +70,12 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
      */
     @Override
     public E findMax() throws NoSuchElementException {
+        // Throws exception if no elements are contained
         if (this.arrCount == 0) {
             throw new NoSuchElementException();
         }
 
+        // Optimizing to find the max value in the array
         E currentMax = this.array[0];
         for (int i = 1; i < arrSize - 1; i++) {
             int comparison = this.helpCompare(currentMax, array[i]);
@@ -75,9 +96,11 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
     @SuppressWarnings("unchecked")
     @Override
     public E deleteMax() throws NoSuchElementException {
+        // throws exception if the array size is zero or no elements
         if (this.arrSize == 0 || this.arrCount == 0) {
             throw new NoSuchElementException();
         }
+        // Optimizing to find the max values
         E currentMax = this.array[0];
         int maxValue = 0;
         for (int i = 1; i < arrSize - 1; i++) {
@@ -87,6 +110,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
                 maxValue = i;
             }
         }
+        // Creating a new array which now contains all elements except the max value found previously
         E[] tempArray = (E[]) new Object[arrSize];
         for (int i = 0; i < arrSize - 2; i++) {
             if (i < maxValue)
@@ -94,6 +118,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
             else if (i > maxValue)
                 tempArray[i] = this.array[i + 1];
         }
+        // Returns the max value and updates the element count and array
         arrCount -= 1;
         this.array = tempArray;
         return currentMax;
@@ -107,10 +132,13 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
     @SuppressWarnings("unchecked")
     @Override
     public void insert(Object item) {
+        // Grows the array if needed
         if (this.arrCount + 1 == this.arrSize) {
             this.arrSize *= 2;
         }
+        // Creating a new array that now finds the correct position from binary search
         E[] tempArray = (E[]) new Object[this.arrSize];
+        // Increasing array count due to new element
         this.arrCount += 1;
         int mid = BinarySearchMethod(this.array, this.arrCount, this.arrSize, (E) item);
         for(int i = 0; i < this.arrCount; i++){
@@ -133,7 +161,10 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
      */
     @SuppressWarnings("unchecked")
     private int BinarySearchMethod(E[] thisArray, int thisArrayCount, int thisArraySize, E item) {
+        // Takes in an array of the specified size
         E[] tempArray = (E[]) new Object[thisArraySize];
+
+        // Setting low, high and mid variables. Then changing values to locate the correct position for the item.
         int low = 0;
         int high = thisArrayCount - 1;
         int mid = (high + low) / 2;
@@ -161,12 +192,15 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
     @SuppressWarnings("unchecked")
     @Override
     public void insertAll(Collection coll) {
+        // Translating the collection to an array that can be iterated through
         Object[] collArray = coll.toArray();
         for(int i = 0; i < collArray.length; i++){
+            // insert the value into the object
             this.insert(collArray[i]);
         }
     }
-// check piazza
+
+    // method used in tests to help with comparisons of final results
     protected E[] getArray(){
         return this.array;
     }
@@ -180,13 +214,16 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
     @SuppressWarnings("unchecked")
     @Override
     public boolean contains(Object item) {
+        // Use binary search to find the corresponding index where this item would be
         int index = BinarySearchMethod(this.array, this.arrCount, this.arrSize, (E) item);
+        // take care of Double instances
         if (item instanceof Double) {
             if (Math.abs((Double) item - (Double) this.array[index]) < .01) {
                 return true;
             }
             return false;
         }
+        // check if the item is equal to the item at the corresponding index in the array
         if (this.array[index] != item)
             return false;
         return true;
@@ -197,6 +234,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
      */
     @Override
     public int size() {
+        // return the number of elements inside the object
         return this.arrCount;
     }
 
@@ -205,6 +243,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
      */
     @Override
     public boolean isEmpty() {
+        // if there are no elements inside the object
         if (this.arrCount == 0) {
             return true;
         }
@@ -218,88 +257,15 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
     @SuppressWarnings("unchecked")
     @Override
     public void clear() {
+        // if the size of the array is 0 or there are no elements in the array
         if(this.arrSize == 0 || this.arrCount == 0)
+            // don't do anything
             return;
+        // create a new blank array that will replace the current one in the object
         E[] newArray = (E[]) new Object[]{};
+        // reset all the values in the object
         this.arrCount = 0;
         this.arrSize = 10;
         this.array = newArray;
-    }
-
-    // Create the comparators for ints, doubles, and strings
-    /**
-     * Comparator that defines an ordering among a SimplePriorityQueue of Integers using their value.
-     */
-    public class OrderInt implements Comparator<Integer> {
-        /**
-         * This compare sorts Integers in reverse order, such that the greatest value is placed in the back and the
-         * smallest value is in the front. This is a reverse ordering to the natural ordering of comparable in java.
-         *
-         * @param object1 - the first object to be compared.
-         * @param object2 - the second object to be compared.
-         * @return result - (int) result variable that determines the ordering within a SimplePriorityQueue<Integer>
-         */
-        public int compare(Integer object1, Integer object2) {
-            int result;
-            if ((object1 - object2) < 0)
-                result = 1;
-            else if ((object1 - object2) == 0) {
-                result = 0;
-            }
-            else
-                result = -1;
-            return result;
-        }
-    }
-    /**
-     * Comparator that defines an ordering for Strings in a SimplePriorityQueue<String> by lexicographical ordering.
-     */
-    public class OrderString implements Comparator<String> {
-
-        /**
-         * This compare sorts Strings in reverse order, such that the greatest value is placed in the back and the
-         * smallest value is in the front. This is a reverse ordering to the natural ordering of comparable in java.
-         *
-         * @param object1 - the first object to be compared.
-         * @param object2 - the second object to be compared.
-         * @return result - (int) result variable that determines the ordering within a SimplePriorityQueue<String>
-         */
-        public int compare(String object1, String object2) {
-            int result;
-            if ((object1.compareTo(object2)) < 0)
-                result = 1;
-            else if ((object1.compareTo(object2)) == 0) {
-                result = 0;
-            }
-            else
-                result = -1;
-            return result;
-        }
-    }
-
-    /**
-     * Comparator that defines an ordering for Strings in a SimplePriorityQueue<String> by lexicographical ordering.
-     */
-    public class OrderDouble implements Comparator<Double> {
-
-        /**
-         * This compare sorts Double's in reverse order, such that the greatest value is placed in the back and the
-         * smallest value is in the front. This is a reverse ordering to the natural ordering of comparable in java.
-         *
-         * @param object1 - the first object to be compared.
-         * @param object2 - the second object to be compared.
-         * @return result - (int) result variable that determines the ordering within a SimplePriorityQueue<String>
-         */
-        public int compare(Double object1, Double object2) {
-            int result;
-            if (object1 - object2 < 0)
-                result = 1;
-            else if (Math.abs(object1 - object2) < 0.001) {
-                result = 0;
-            }
-            else
-                result = -1;
-            return result;
-        }
     }
 }
