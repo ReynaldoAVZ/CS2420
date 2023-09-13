@@ -44,7 +44,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
      * @return the integer based on the comparison
      */
     @SuppressWarnings("unchecked")
-    private int helpCompare (E o1, E o2){
+    public int helpCompare (E o1, E o2){
         // if comparator is null
         if (this.cmp == null)
             if(o2 == null)
@@ -74,17 +74,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
         if (this.arrCount == 0) {
             throw new NoSuchElementException();
         }
-
-        // Optimizing to find the max value in the array
-        E currentMax = this.array[0];
-        for (int i = 1; i < arrSize - 1; i++) {
-            int comparison = this.helpCompare(currentMax, array[i]);
-            if (comparison < 0) {
-                currentMax = array[i];
-            }
-        }
-
-        return currentMax;
+        return this.array[arrCount - 1];
     }
 
     /**
@@ -201,7 +191,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
     }
 
     // method used in tests to help with comparisons of final results
-    protected E[] getArray(){
+    public E[] getArray(){
         return this.array;
     }
 
