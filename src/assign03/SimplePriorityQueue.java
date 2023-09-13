@@ -4,8 +4,13 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
-
-public class SimplePriorityQueue<E> implements PriorityQueue{
+/**
+ * This Java class represents an ordered SimplePriorityQueue that uses a simple backing array.
+ *
+ * @author Reynaldo Villarreal and Mikhail Ahmed
+ * @version 2023-09-13
+ */
+public class SimplePriorityQueue<E> implements PriorityQueue<E>{
 
     // Declaring object and primitive variables for Simple Priority Queue objects
     private E[] array;
@@ -121,26 +126,26 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void insert(Object item) {
+    public void insert(E item) {
+        int mid = BinarySearchMethod(this.array, this.arrCount, this.arrSize, (E) item);
         // Grows the array if needed
         if (this.arrCount + 1 == this.arrSize) {
             this.arrSize *= 2;
-        }
-        // Creating a new array that now finds the correct position from binary search
-        E[] tempArray = (E[]) new Object[this.arrSize];
-        // Increasing array count due to new element
-        this.arrCount += 1;
-        int mid = BinarySearchMethod(this.array, this.arrCount, this.arrSize, (E) item);
-        for(int i = 0; i < this.arrCount; i++){
-            if(i < mid){
+            E[] tempArray = (E[]) new Object[this.arrSize];
+            for(int i = 0; i < this.arrCount; i++){
                 tempArray[i] = this.array[i];
             }
-            else {
-                tempArray[i + 1] = this.array[i];
-            }
+            this.array = tempArray;
         }
-        tempArray[mid] = (E) item;
-        this.array = tempArray;
+        // Creating a new array that now finds the correct position from binary search
+
+        // Increasing array count due to new element
+
+        for(int i = arrCount; i >= mid; i--){
+                this.array[i + 1] = this.array[i];
+        }
+        this.arrCount += 1;
+        this.array[mid] = (E) item;
     }
 
     /**
@@ -152,8 +157,6 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
     @SuppressWarnings("unchecked")
     private int BinarySearchMethod(E[] thisArray, int thisArrayCount, int thisArraySize, E item) {
         // Takes in an array of the specified size
-        E[] tempArray = (E[]) new Object[thisArraySize];
-
         // Setting low, high and mid variables. Then changing values to locate the correct position for the item.
         int low = 0;
         int high = thisArrayCount - 1;
@@ -165,13 +168,13 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
                 high = mid - 1;
             }
             else if (result == 0){
-                break;
+                return mid;
             }
             else{
                 low = mid + 1;
             }
         }
-        return mid;
+        return low;
     }
 
     /**
@@ -181,9 +184,9 @@ public class SimplePriorityQueue<E> implements PriorityQueue{
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void insertAll(Collection coll) {
+    public void insertAll(Collection<? extends E> coll) {
         // Translating the collection to an array that can be iterated through
-        Object[] collArray = coll.toArray();
+        E[] collArray = (E[]) coll.toArray();
         for(int i = 0; i < collArray.length; i++){
             // insert the value into the object
             this.insert(collArray[i]);
