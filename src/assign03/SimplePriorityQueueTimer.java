@@ -1,7 +1,7 @@
 package assign03;
 
 /**
-* This program times how long it takes for our findmax() and insert() method to run through different SimplePriorityQueues of
+* This program times how long it takes for our findMax() and insert() method to run through different SimplePriorityQueues of
  * different sizes, ranging from 100,000 to 2,000,000 in increments of 100,000.
  *
  * @author Reynaldo Villarreal Zambrano and Mikhail Ahmed
@@ -10,11 +10,8 @@ package assign03;
 public class SimplePriorityQueueTimer {
     public static void main(String[] args) {
         for (int n = 100000; n <= 2000000; n += 100000) {
-            // used to use findMax()
+            // used to use findMax() and do insert()
             SimplePriorityQueue<Integer> spq = new SimplePriorityQueue<Integer>();
-//            for (int i = 0; i < n; i++) {
-//                spq.insert(i);
-//            }
 
             long startTime, midpointTime, stopTime;
 
@@ -27,7 +24,7 @@ public class SimplePriorityQueueTimer {
 
             // Now, run the test.
 
-            double timesToLoop = 2;
+            double timesToLoop = 70;
 
             startTime = System.nanoTime();
             //int max;
@@ -39,6 +36,7 @@ public class SimplePriorityQueueTimer {
                 for (int j = 0; j < n; j++) {
                     spq.insert(j);
                 }
+                spq.clear();
             }
 
             midpointTime = System.nanoTime();

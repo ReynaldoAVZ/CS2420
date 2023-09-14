@@ -298,7 +298,7 @@ class SimplePriorityQueueTest {
     }
     @Test
     void clearInt() {
-        Integer[] cleared = new Integer[]{};
+        Integer[] cleared = new Integer[10];
         intNumbersSimple.clear();
         assertArrayEquals(cleared, intNumbersSimple.getArray());
     }
@@ -387,7 +387,7 @@ class SimplePriorityQueueTest {
 
     @Test
     void clearWords() {
-        String[] cleared = new String[]{};
+        String[] cleared = new String[10];
         wordsSimple.clear();
         assertArrayEquals(cleared, wordsSimple.getArray());
     }
@@ -476,7 +476,7 @@ class SimplePriorityQueueTest {
     }
     @Test
     void clearDouble() {
-        Double[] cleared = new Double[]{};
+        Double[] cleared = new Double[10];
         decimalNumbersSimple.clear();
         assertArrayEquals(cleared, decimalNumbersSimple.getArray());
     }
@@ -646,7 +646,7 @@ class SimplePriorityQueueTest {
     }
     @Test
     void clearIntComparator() {
-        Integer[] cleared = new Integer[]{};
+        Integer[] cleared = new Integer[10];
         intNumbersSimpleComparator.clear();
         assertArrayEquals(cleared, intNumbersSimpleComparator.getArray());
     }
@@ -734,7 +734,7 @@ class SimplePriorityQueueTest {
 
     @Test
     void clearWordsComparator() {
-        String[] cleared = new String[]{};
+        String[] cleared = new String[10];
         wordsSimpleComparator.clear();
         assertArrayEquals(cleared, wordsSimpleComparator.getArray());
     }
@@ -823,7 +823,7 @@ class SimplePriorityQueueTest {
     }
     @Test
     void clearDoubleComparator() {
-        Double[] cleared = new Double[]{};
+        Double[] cleared = new Double[10];
         decimalNumbersComparator.clear();
         assertArrayEquals(cleared, decimalNumbersComparator.getArray());
     }

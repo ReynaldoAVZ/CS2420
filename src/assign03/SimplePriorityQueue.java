@@ -18,7 +18,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E>{
     private int arrSize;
     private Comparator<? super E> cmp;
 
-    private int arrCount = 0;
+    private int arrCount;
 
     /**
      * These constructors instantiate SimplePriorityQueue Object without a Comparator.
@@ -27,6 +27,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E>{
     public SimplePriorityQueue() {
         this.arrSize = 10;
         this.array = (E[]) new Object[this.arrSize];
+        this.arrCount = 0;
     }
     /**
      * These constructors instantiate SimplePriorityQueue Object with a Comparator.
@@ -38,6 +39,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E>{
         this.arrSize = 10;
         this.array = (E[]) new Object[this.arrSize];
         this.cmp = cmp;
+        this.arrCount = 0;
     }
 
     /**
@@ -121,7 +123,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E>{
         }
         // insert the item at the correct index
         for(int i = arrCount; i >= mid; i--){
-                this.array[i + 1] = this.array[i];
+            this.array[i + 1] = this.array[i];
         }
         this.arrCount += 1;
         this.array[mid] = (E) item;
@@ -133,13 +135,12 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E>{
      * @param item - (E) item that is being inserted into the array at the correct index
      * @return array - (E[]) array that now contains the desired item at the correct index.
      */
-    @SuppressWarnings("unchecked")
     private int BinarySearchMethod(E[] thisArray, int thisArrayCount, int thisArraySize, E item) {
         // Takes in an array of the specified size
-        // Setting low, high and mid variables. Then changing values to locate the correct position for the item.
+        // Setting low, high and mid-variables. Then changing values to locate the correct position for the item.
         int low = 0;
         int high = thisArrayCount - 1;
-        int mid = (high + low) / 2;
+        int mid;
         while(low <= high) {
             mid = (high + low) / 2;
             int result = helpCompare(item, thisArray[mid]);
@@ -234,7 +235,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E>{
             // don't do anything
             return;
         // create a new blank array that will replace the current one in the object
-        E[] newArray = (E[]) new Object[]{};
+        E[] newArray = (E[]) new Object[10];
         // reset all the values in the object
         this.arrCount = 0;
         this.arrSize = 10;
