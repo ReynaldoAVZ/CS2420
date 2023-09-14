@@ -95,27 +95,9 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E>{
         if (this.arrSize == 0 || this.arrCount == 0) {
             throw new NoSuchElementException();
         }
-        // Optimizing to find the max values
-        E currentMax = this.array[0];
-        int maxValue = 0;
-        for (int i = 1; i < arrSize - 1; i++) {
-            int comparison = this.helpCompare(currentMax, array[i]);
-            if (comparison < 0) {
-                currentMax = array[i];
-                maxValue = i;
-            }
-        }
-        // Creating a new array which now contains all elements except the max value found previously
-        E[] tempArray = (E[]) new Object[arrSize];
-        for (int i = 0; i < arrSize - 2; i++) {
-            if (i < maxValue)
-                tempArray[i] = this.array[i];
-            else if (i > maxValue)
-                tempArray[i] = this.array[i + 1];
-        }
-        // Returns the max value and updates the element count and array
+        E currentMax = this.array[arrCount - 1];
+        this.array[arrCount - 1] = null;
         arrCount -= 1;
-        this.array = tempArray;
         return currentMax;
     }
 
@@ -137,10 +119,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E>{
             }
             this.array = tempArray;
         }
-        // Creating a new array that now finds the correct position from binary search
-
-        // Increasing array count due to new element
-
+        // insert the item at the correct index
         for(int i = arrCount; i >= mid; i--){
                 this.array[i + 1] = this.array[i];
         }
