@@ -2,6 +2,7 @@ package assign04;
 
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -73,10 +74,11 @@ public class LargestNumberSolver<T> {
     public static int findLargestInt(Integer[] arr) throws OutOfRangeException {
         Integer[] arrCopy = arr.clone();
         LargestNumberSolver.insertionSort(arrCopy, LargestNumberSolver::findLargestIntSorter);
-        BigInteger biggestVal = null;
+        BigInteger biggestVal;
         BigInteger limit = new BigInteger("2147483647");
         int realVal = 0;
         if (arr.length == 0) {
+            biggestVal = BigInteger.valueOf(0);
         }
         else {
             StringBuilder bigNumber = new StringBuilder();
@@ -111,10 +113,11 @@ public class LargestNumberSolver<T> {
     public static long findLargestLong(Integer[] arr) throws OutOfRangeException {
         Integer[] arrCopy = arr.clone();
         LargestNumberSolver.insertionSort(arrCopy, LargestNumberSolver::findLargestLongSorter);
-        BigInteger biggestVal = null;
+        BigInteger biggestVal;
         BigInteger limit = new BigInteger("9223372036854775807");
         Long realVal = 0L;
         if (arr.length == 0) {
+            biggestVal = BigInteger.valueOf(0L);
         }
         else {
             StringBuilder bigNumber = new StringBuilder();
@@ -134,13 +137,19 @@ public class LargestNumberSolver<T> {
     }
 
     /**
-     * This method behaves the same as the previous method, but for data type long instead of data type int.
-     *
-     * @param list
-     * @return
+     * This method sums the largest numbers that can be formed by each array in the given list.
+     * This method must not alter the given list.
+     * @param list - A list that holds arrays
+     * @return sum - A value that represents the sum of the biggest terms of each array
      */
     public static BigInteger sum(List<Integer[]> list) {
-        return null;
+        BigInteger sum = BigInteger.valueOf(0);
+        for (int i = 0; i < list.size(); i++) {
+            Integer[] currentArray = list.get(i);
+            BigInteger value = LargestNumberSolver.findLargestNumber(currentArray);
+            sum = sum.add(value);
+        }
+        return sum;
     }
 
     /**
@@ -159,7 +168,21 @@ public class LargestNumberSolver<T> {
      * @throws IllegalArgumentException
      */
     public static Integer[] findKthLargest(List<Integer[]> list, int k) throws IllegalArgumentException {
-        return null;
+        Integer[] holderArray = new Integer[list.size()];
+        //BigInteger[] holderArray = new BigInteger[list.size()];
+        List<Integer[]> listCopy = new ArrayList<Integer[]>();
+        for (int i = 0; i < list.size(); i++) {
+            Integer[] currentArray = list.get(i);
+            LargestNumberSolver.insertionSort(currentArray, new OrderIntegers());
+            listCopy.add(currentArray);
+        }
+        for(int i = 0; i < listCopy.size(); i++) {
+            Integer[] tempArray = listCopy.get(i);
+            BigInteger val = LargestNumberSolver.findLargestNumber(tempArray);
+
+        }
+        LargestNumberSolver.insertionSort(holderArray, new OrderIntegers());
+
     }
 
     /**
@@ -267,5 +290,25 @@ public class LargestNumberSolver<T> {
         }
     }
 }
-
+class OrderIntegers implements Comparator<Integer> {
+    /**
+     * This compare sorts Integers in reverse order, such that the greatest value is placed in the back and the
+     * smallest value is in the front. This is a reverse ordering to the natural ordering of comparable in java.
+     *
+     * @param object1 - the first object to be compared.
+     * @param object2 - the second object to be compared.
+     * @return result - (int) result variable that determines the ordering within a SimplePriorityQueue<Integer>
+     */
+    public int compare(Integer object1, Integer object2) {
+        int result;
+        if ((object1 - object2) < 0)
+            result = -1;
+        else if ((object1 - object2) == 0) {
+            result = 0;
+        }
+        else
+            result = 1;
+        return result;
+    }
+}
 
