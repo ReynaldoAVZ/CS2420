@@ -1,7 +1,8 @@
 package assign04;
 
-
+import java.io.*;
 import java.math.BigInteger;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -73,7 +74,7 @@ public class LargestNumberSolver<T> {
      */
     public static int findLargestInt(Integer[] arr) throws OutOfRangeException {
         Integer[] arrCopy = arr.clone();
-        LargestNumberSolver.insertionSort(arrCopy, LargestNumberSolver::findLargestIntSorter);
+        LargestNumberSolver.insertionSort(arrCopy, LargestNumberSolver::findLargestBigIntegerSorter);
         BigInteger biggestVal;
         BigInteger limit = new BigInteger("2147483647");
         int realVal = 0;
@@ -112,7 +113,7 @@ public class LargestNumberSolver<T> {
      */
     public static long findLargestLong(Integer[] arr) throws OutOfRangeException {
         Integer[] arrCopy = arr.clone();
-        LargestNumberSolver.insertionSort(arrCopy, LargestNumberSolver::findLargestLongSorter);
+        LargestNumberSolver.insertionSort(arrCopy, LargestNumberSolver::findLargestBigIntegerSorter);
         BigInteger biggestVal;
         BigInteger limit = new BigInteger("9223372036854775807");
         Long realVal = 0L;
@@ -168,21 +169,12 @@ public class LargestNumberSolver<T> {
      * @throws IllegalArgumentException
      */
     public static Integer[] findKthLargest(List<Integer[]> list, int k) throws IllegalArgumentException {
-        Integer[] holderArray = new Integer[list.size()];
-        //BigInteger[] holderArray = new BigInteger[list.size()];
-        List<Integer[]> listCopy = new ArrayList<Integer[]>();
+        Integer[][] holderArray = new Integer[list.size()][];
         for (int i = 0; i < list.size(); i++) {
-            Integer[] currentArray = list.get(i);
-            LargestNumberSolver.insertionSort(currentArray, new OrderIntegers());
-            listCopy.add(currentArray);
+            holderArray[i] = list.get(i);
         }
-        for(int i = 0; i < listCopy.size(); i++) {
-            Integer[] tempArray = listCopy.get(i);
-            BigInteger val = LargestNumberSolver.findLargestNumber(tempArray);
-
-        }
-        LargestNumberSolver.insertionSort(holderArray, new OrderIntegers());
-
+        LargestNumberSolver.insertionSort(holderArray, new OrderArray());
+        return holderArray[k];
     }
 
     /**
@@ -193,7 +185,26 @@ public class LargestNumberSolver<T> {
      * @return - A list of the integer arrays from the filename
      */
     public static List<Integer[]> readFile(String filename) {
-        return null;
+        // initialize our List that will be returned
+        List<Integer[]> intList = new ArrayList<Integer[]>();
+
+        try {
+            BufferedReader arrayReader = new BufferedReader(new FileReader(filename));
+            String currentLine;
+            // while there are still lines that can be read in the file
+            while ((currentLine = arrayReader.readLine()) != null) {
+                // read the current line
+                String[] token = currentLine.split("\\s+");
+                Integer[] intArray = new Integer[token.length];
+                for(int i = 0; i < intArray.length; i++) {
+                    intArray[i] = Integer.valueOf(token[i]);
+                }
+                intList.add(intArray);
+            }
+        }
+        catch (IOException ignored) {
+        }
+        return intList;
     }
 
     /**
@@ -229,66 +240,66 @@ public class LargestNumberSolver<T> {
         }
     }
 
-    public static int findLargestIntSorter(Integer o1, Integer o2) {
-        // Declare all the objects that will hold values
-        StringBuilder object1 = new StringBuilder();
-        object1.append(o1);
-        StringBuilder object2 = new StringBuilder();
-        object2.append(o2);
-        StringBuilder bigNumber1 = new StringBuilder();
-        StringBuilder bigNumber2 = new StringBuilder();
+//    public static int findLargestIntSorter(Integer o1, Integer o2) {
+//        // Declare all the objects that will hold values
+//        StringBuilder object1 = new StringBuilder();
+//        object1.append(o1);
+//        StringBuilder object2 = new StringBuilder();
+//        object2.append(o2);
+//        StringBuilder bigNumber1 = new StringBuilder();
+//        StringBuilder bigNumber2 = new StringBuilder();
+//
+//        // build two big numbers
+//
+//        // build big number 1 (XY)
+//        bigNumber1.append(object1);
+//        bigNumber1.append(object2);
+//
+//        // build big number 2 (YX)
+//        bigNumber2.append(object2);
+//        bigNumber2.append(object1);
+//
+//        // compare big number 1 & 2
+//
+//        if (bigNumber1.compareTo(bigNumber2) < 0) { // if number 1 is less than number 2
+//            return 1;
+//        } else if (bigNumber1.compareTo(bigNumber2) > 0) { // if number 2 is less than number 1
+//            return -1;
+//        } else { // if they're the same
+//            return 0;
+//        }
+//    }
 
-        // build two big numbers
 
-        // build big number 1 (XY)
-        bigNumber1.append(object1);
-        bigNumber1.append(object2);
-
-        // build big number 2 (YX)
-        bigNumber2.append(object2);
-        bigNumber2.append(object1);
-
-        // compare big number 1 & 2
-
-        if (bigNumber1.compareTo(bigNumber2) < 0) { // if number 1 is less than number 2
-            return 1;
-        } else if (bigNumber1.compareTo(bigNumber2) > 0) { // if number 2 is less than number 1
-            return -1;
-        } else { // if they're the same
-            return 0;
-        }
-    }
-
-
-    public static int findLargestLongSorter(Integer o1, Integer o2) {
-        // Declare all the objects that will hold values
-        StringBuilder object1 = new StringBuilder();
-        object1.append(o1);
-        StringBuilder object2 = new StringBuilder();
-        object2.append(o2);
-        StringBuilder bigNumber1 = new StringBuilder();
-        StringBuilder bigNumber2 = new StringBuilder();
-
-        // build two big numbers
-
-        // build big number 1 (XY)
-        bigNumber1.append(object1);
-        bigNumber1.append(object2);
-
-        // build big number 2 (YX)
-        bigNumber2.append(object2);
-        bigNumber2.append(object1);
-
-        // compare big number 1 & 2
-
-        if (bigNumber1.compareTo(bigNumber2) < 0) { // if number 1 is less than number 2
-            return 1;
-        } else if (bigNumber1.compareTo(bigNumber2) > 0) { // if number 2 is less than number 1
-            return -1;
-        } else { // if they're the same
-            return 0;
-        }
-    }
+//    public static int findLargestLongSorter(Integer o1, Integer o2) {
+//        // Declare all the objects that will hold values
+//        StringBuilder object1 = new StringBuilder();
+//        object1.append(o1);
+//        StringBuilder object2 = new StringBuilder();
+//        object2.append(o2);
+//        StringBuilder bigNumber1 = new StringBuilder();
+//        StringBuilder bigNumber2 = new StringBuilder();
+//
+//        // build two big numbers
+//
+//        // build big number 1 (XY)
+//        bigNumber1.append(object1);
+//        bigNumber1.append(object2);
+//
+//        // build big number 2 (YX)
+//        bigNumber2.append(object2);
+//        bigNumber2.append(object1);
+//
+//        // compare big number 1 & 2
+//
+//        if (bigNumber1.compareTo(bigNumber2) < 0) { // if number 1 is less than number 2
+//            return 1;
+//        } else if (bigNumber1.compareTo(bigNumber2) > 0) { // if number 2 is less than number 1
+//            return -1;
+//        } else { // if they're the same
+//            return 0;
+//        }
+//    }
 }
 class OrderIntegers implements Comparator<Integer> {
     /**
@@ -308,6 +319,28 @@ class OrderIntegers implements Comparator<Integer> {
         }
         else
             result = 1;
+        return result;
+    }
+}
+class OrderArray implements Comparator<Integer[]> {
+    /**
+     * This compare sorts Integer Arrays in order, such that the greatest value is placed in the back and the
+     * smallest value is in the front. This is a reverse ordering to the natural ordering of comparable in java.
+     *
+     * @param object1 - the first object to be compared.
+     * @param object2 - the second object to be compared.
+     * @return result - (int) result variable that determines the ordering within a SimplePriorityQueue<Integer>
+     */
+    public int compare(Integer[] object1, Integer[] object2) {
+        int result;
+        if ((LargestNumberSolver.findLargestInt(object1) - LargestNumberSolver.findLargestInt(object2)) < 0) {
+            result = 1;
+        }
+        else if ((LargestNumberSolver.findLargestInt(object1) - LargestNumberSolver.findLargestInt(object2)) == 0) {
+            result = 0;
+        }
+        else
+            result = -1;
         return result;
     }
 }

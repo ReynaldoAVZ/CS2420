@@ -2,12 +2,11 @@ package assign04;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.NoSuchElementException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LargestNumberSolverTest {
@@ -144,4 +143,67 @@ public class LargestNumberSolverTest {
     }
 
     // find negative sums
+
+    @Test
+    public void testFind0KthArray() {
+        Integer[] array1 = new Integer[]{1, 2, 3, 4};
+        Integer[] array2 = new Integer[]{3, 2, 6, 8, 8};
+        Integer[] array3 = new Integer[]{28, 19, 32, 9};
+        List<Integer[]> integerList = new ArrayList<Integer[]>();
+        integerList.add(array1);
+        integerList.add(array2);
+        integerList.add(array3);
+        Integer[] result = LargestNumberSolver.findKthLargest(integerList, 0);
+        assertArrayEquals(result, array3);
+    }
+    @Test
+    public void testFind1KthArray() {
+        Integer[] array1 = new Integer[]{1, 2, 3, 4};
+        Integer[] array2 = new Integer[]{3, 2, 6, 8, 8};
+        Integer[] array3 = new Integer[]{28, 19, 32, 9};
+        List<Integer[]> integerList = new ArrayList<Integer[]>();
+        integerList.add(array1);
+        integerList.add(array2);
+        integerList.add(array3);
+        Integer[] result = LargestNumberSolver.findKthLargest(integerList, 1);
+        assertArrayEquals(result, array2);
+    }
+
+    @Test
+    public void testFind2KthArray() {
+        Integer[] array1 = new Integer[]{1, 2, 3, 4};
+        Integer[] array2 = new Integer[]{3, 2, 6, 8, 8};
+        Integer[] array3 = new Integer[]{28, 19, 32, 9};
+        List<Integer[]> integerList = new ArrayList<Integer[]>();
+        integerList.add(array1);
+        integerList.add(array2);
+        integerList.add(array3);
+        Integer[] result = LargestNumberSolver.findKthLargest(integerList, 2);
+        assertArrayEquals(result, array1);
+    }
+
+    // write a test for zero array case
+
+    @Test
+    public void testFile() {
+        List<Integer[]> resultList = LargestNumberSolver.readFile("src/assign04/testFile.txt");
+        Integer[] array1 = new Integer[]{12, 54, 78, 89};
+        Integer[] array2 = new Integer[]{14, 78, 32, 43, 78, 98, 0, 9, 7, 6, 5, 3};
+        Integer[] array3 = new Integer[]{12, 43, 89, 85, 32, 43, 11};
+        List<Integer[]> realList = new ArrayList<Integer[]>();
+        realList.add(array1);
+        realList.add(array2);
+        realList.add(array3);
+        assertArrayEquals(resultList.get(0), realList.get(0));
+        assertArrayEquals(resultList.get(1), realList.get(1));
+        assertArrayEquals(resultList.get(2), realList.get(2));
+    }
+
+    // Test Empty file to throw exception
+    @Test
+    public void testEmptyFile() {
+       List<Integer[]> resultList = new ArrayList<Integer[]>();
+       List<Integer[]> realList = LargestNumberSolver.readFile("src/assign04/emptyFile.txt");
+       assertTrue(resultList.equals(realList));
+    }
 }
