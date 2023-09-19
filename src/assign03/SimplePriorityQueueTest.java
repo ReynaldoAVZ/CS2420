@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
-
 // Create the comparators for ints, doubles, and strings
 /**
  * Comparator that defines an ordering among a SimplePriorityQueue of Integers using their value.
