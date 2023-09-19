@@ -1,13 +1,8 @@
 package assign03;
 
-import assign01.MathVector;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-
-import javax.print.attribute.standard.JobOriginatingUserName;
 import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 // Create the comparators for ints, doubles, and strings
@@ -87,7 +82,6 @@ class OrderDouble implements Comparator<Double> {
     }
 }
 
-
 class SimplePriorityQueueTest {
     // declare non-comparator variables
     private SimplePriorityQueue<Integer> intNumbersSimple;
@@ -129,10 +123,6 @@ class SimplePriorityQueueTest {
     private SimplePriorityQueue<Double> decimalEmptyComparator;
     private Collection<Double> decimalCollectionComparator;
     private Comparator<Double> OrderDouble = new OrderDouble();
-
-
-
-
 
     @BeforeEach
     void setUp() throws Exception {
@@ -827,5 +817,4 @@ class SimplePriorityQueueTest {
         decimalNumbersComparator.clear();
         assertArrayEquals(cleared, decimalNumbersComparator.getArray());
     }
-
 }

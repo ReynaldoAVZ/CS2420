@@ -22,11 +22,20 @@ public class LargestNumberSolverTest {
 
     @Test
     public void testInsertionZero(){
-        Integer[] array = new Integer[] {};
+        Integer[] array = new Integer[]{};
         Integer[] orderedArray = new Integer[]{};
         Comparator<Integer> comparator = new OrderIntegers();
         LargestNumberSolver.insertionSort(array, comparator);
         assertArrayEquals(orderedArray, array);
+    }
+
+    @Test
+    public void testSingleArray() {
+        Integer[] array1 = new Integer[]{1};
+        Comparator<Integer> comparator = new OrderIntegers();
+        LargestNumberSolver.insertionSort(array1, comparator);
+        Integer[] real = new Integer[]{1};
+        assertArrayEquals(real, array1);
     }
 
     @Test
@@ -49,6 +58,15 @@ public class LargestNumberSolverTest {
     }
 
     @Test
+    public void testFindBigIntegerNumberMixed() {
+        String value = "65400";
+        Integer[] array = new Integer[]{4, 0, 5, 6, 0};
+        BigInteger real =new BigInteger(value);
+        BigInteger result = LargestNumberSolver.findLargestNumber(array);
+        assertEquals(real, result);
+    }
+
+    @Test
     public void testFindIntNumber() {
         Integer[] array = new Integer[]{2, 147483646};
         int real = 2147483646;
@@ -65,14 +83,21 @@ public class LargestNumberSolverTest {
     }
 
     @Test
+    public void testFindIntMixed() {
+        Integer[] array = new Integer[]{4, 0, 5, 6, 0};
+        int real = 65400;
+        int result = LargestNumberSolver.findLargestInt(array);
+        assertEquals(real, result);
+    }
+
+
+    @Test
     public void testFindIntNumberError() {
         Integer[] array = new Integer[]{2, 147483648};
         assertThrows(OutOfRangeException.class, () -> {
             LargestNumberSolver.findLargestInt(array);
         });
     }
-
-    // go back and find negative values
 
     @Test
     public void testFindLongNumber() {
@@ -89,6 +114,15 @@ public class LargestNumberSolverTest {
         Long result = LargestNumberSolver.findLargestLong(array);
         assertEquals(real, result);
     }
+
+    @Test
+    public void testFindLongMixed() {
+        Integer[] array = new Integer[]{4, 0, 5, 6, 0};
+        Long real = 65400L;
+        Long result = LargestNumberSolver.findLargestLong(array);
+        assertEquals(real, result);
+    }
+
     @Test
     public void testFindLongNumberError() {
         Integer[] array = new Integer[] {9, 23, 45, 65, 54, 32, 45, 67, 32, 12, 45, 78, 89};
@@ -96,9 +130,6 @@ public class LargestNumberSolverTest {
             LargestNumberSolver.findLargestLong(array);
         });
     }
-
-    // go back and find negative values
-
 
     @Test
     public void testSumBigInteger() {
@@ -142,8 +173,6 @@ public class LargestNumberSolverTest {
         assertEquals(result, real);
     }
 
-    // find negative sums
-
     @Test
     public void testFind0KthArray() {
         Integer[] array1 = new Integer[]{1, 2, 3, 4};
@@ -156,6 +185,7 @@ public class LargestNumberSolverTest {
         Integer[] result = LargestNumberSolver.findKthLargest(integerList, 0);
         assertArrayEquals(result, array3);
     }
+
     @Test
     public void testFind1KthArray() {
         Integer[] array1 = new Integer[]{1, 2, 3, 4};
@@ -178,11 +208,22 @@ public class LargestNumberSolverTest {
         integerList.add(array1);
         integerList.add(array2);
         integerList.add(array3);
-        Integer[] result = LargestNumberSolver.findKthLargest(integerList, 2);
+        Integer[] result = LargestNumberSolver.findKthLargest(integerList, integerList.size() - 1);
         assertArrayEquals(result, array1);
     }
 
-    // write a test for zero array case
+    @Test
+    public void testFind2KthArrayZero() {
+        Integer[] array1 = new Integer[]{1, 2, 3, 4};
+        Integer[] array2 = new Integer[]{3, 2, 6, 8, 8};
+        Integer[] array3 = new Integer[]{0, 0, 0, 0};
+        List<Integer[]> integerList = new ArrayList<Integer[]>();
+        integerList.add(array1);
+        integerList.add(array2);
+        integerList.add(array3);
+        Integer[] result = LargestNumberSolver.findKthLargest(integerList, 2);
+        assertArrayEquals(result, array3);
+    }
 
     @Test
     public void testFile() {
