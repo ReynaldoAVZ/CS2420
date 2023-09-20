@@ -1,11 +1,7 @@
 package assign04;
 
-import assign03.SimplePriorityQueue;
-
 import java.util.ArrayList;
 import java.util.List;
-
-public class LargestNumberSolverTimer {
 
 /**
  * This program times how long it takes for our findKthLargest() with our insertionSort() method and also Java's
@@ -14,6 +10,8 @@ public class LargestNumberSolverTimer {
  * @author Reynaldo Villarreal Zambrano and Mikhail Ahmed
  * @version 2023-09-18
  */
+public class LargestNumberSolverTimer {
+
     public static void main(String[] args) {
         Integer[] array = new Integer[]{1, 4, 3, 2};
         for (int n = 10000; n <= 200000; n += 10000) {

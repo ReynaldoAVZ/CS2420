@@ -2,7 +2,6 @@ package assign04;
 
 import java.io.*;
 import java.math.BigInteger;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -223,11 +222,16 @@ public class LargestNumberSolver<T> {
      * @throws IllegalArgumentException
      */
     public static Integer[] findKthLargest(List<Integer[]> list, int k) throws IllegalArgumentException {
+        // declare an array of arrays that will hold all contents of the list
         Integer[][] holderArray = new Integer[list.size()][];
+        // iterate through the list
         for (int i = 0; i < list.size(); i++) {
+            // place the item in the list into the holder array
             holderArray[i] = list.get(i);
         }
+        // sort our array of arrays using our pre-defined ordering for arrays in order to order it from greatest to least
         LargestNumberSolver.insertionSort(holderArray, new OrderArray());//
+        // return the array positioned at k which is the kth largest value
         return holderArray[k];
 
         // Code used to find the run time of Java.sort()

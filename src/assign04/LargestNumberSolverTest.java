@@ -1,14 +1,18 @@
 package assign04;
 
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This Java class represents a NumberSolver Tester that tests all the methods written with regular, edge, and error cases.
+ *
+ * @author Reynaldo Villarreal and Mikhail Ahmed
+ * @version 2023-09-20
+ */
 public class LargestNumberSolverTest {
 
     @Test
@@ -21,7 +25,7 @@ public class LargestNumberSolverTest {
     }
 
     @Test
-    public void testInsertionZero(){
+    public void testInsertionZero() {
         Integer[] array = new Integer[]{};
         Integer[] orderedArray = new Integer[]{};
         Comparator<Integer> comparator = new OrderIntegers();
@@ -61,7 +65,7 @@ public class LargestNumberSolverTest {
     public void testFindBigIntegerNumberMixed() {
         String value = "65400";
         Integer[] array = new Integer[]{4, 0, 5, 6, 0};
-        BigInteger real =new BigInteger(value);
+        BigInteger real = new BigInteger(value);
         BigInteger result = LargestNumberSolver.findLargestNumber(array);
         assertEquals(real, result);
     }
@@ -125,7 +129,7 @@ public class LargestNumberSolverTest {
 
     @Test
     public void testFindLongNumberError() {
-        Integer[] array = new Integer[] {9, 23, 45, 65, 54, 32, 45, 67, 32, 12, 45, 78, 89};
+        Integer[] array = new Integer[]{9, 23, 45, 65, 54, 32, 45, 67, 32, 12, 45, 78, 89};
         assertThrows(OutOfRangeException.class, () -> {
             LargestNumberSolver.findLargestLong(array);
         });
@@ -240,11 +244,17 @@ public class LargestNumberSolverTest {
         assertArrayEquals(resultList.get(2), realList.get(2));
     }
 
-    // Test Empty file to throw exception
     @Test
     public void testEmptyFile() {
-       List<Integer[]> resultList = new ArrayList<Integer[]>();
-       List<Integer[]> realList = LargestNumberSolver.readFile("src/assign04/emptyFile.txt");
-       assertTrue(resultList.equals(realList));
+        List<Integer[]> resultList = new ArrayList<Integer[]>();
+        List<Integer[]> realList = LargestNumberSolver.readFile("src/assign04/emptyFile.txt");
+        assertTrue(resultList.equals(realList));
+    }
+
+    @Test
+    public void testFileThatDoesntExist() {
+        List<Integer[]> resultList = new ArrayList<Integer[]>();
+        List<Integer[]> realList = LargestNumberSolver.readFile("src/assign04/fileDoesNotExist.txt");
+        assertTrue(resultList.equals(realList));
     }
 }
