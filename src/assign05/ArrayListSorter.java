@@ -1,6 +1,9 @@
 package assign05;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Random;
+import static java.util.Collections.shuffle;
 
 /**
  * This Java class represents an ArrayListSorter that has built in methods to use various different sorting algorithms
@@ -20,7 +23,8 @@ import java.util.ArrayList;
  * @version 2023-10-00
  */
 public class ArrayListSorter {
-    private static int threshold = 0;
+    private static final int INSERTION_SORT_THRESHOLD = 2;
+    private static final int PIVOT_SELECTION_SORT = 10;
     /**
      * This method performs a merge sort on the generic ArrayList given as input.
      * <p></p>
@@ -35,107 +39,88 @@ public class ArrayListSorter {
      * @param <T> arrayList - (ArrayList<T>) object that needs to be sorted
      */
     public static <T extends Comparable<? super T>> void mergesort(ArrayList<T> arrayList) {
-        if (arrayList.size() <= 1) { // this value can change such that insertion sort is called at different list sizes
-            insertionSort(arrayList);
+        int size = arrayList.size();
+        ArrayList<T> storageList = new ArrayList<T>(size);
+        mergesort(arrayList, 0, arrayList.size() - 1, storageList);
+    }
+
+    private static <T extends Comparable<? super T>> void mergesort(ArrayList<T> arrayList, int left, int right, ArrayList<T> storageList) {
+        if (right - left <= INSERTION_SORT_THRESHOLD) {
+            insertionSort(arrayList, left, right);
             return;
         }
-        // find the middle index of the current list
-        int middle = arrayList.size() / 2;
-        // create two new lists that will contain left and right side of the current list
-        ArrayList<T> leftList = new ArrayList<T>();
-        ArrayList<T> rightList = new ArrayList<T>();
-        // iterate through the current list to split up the values
-        for (int i = 0; i < arrayList.size(); i++) {
-            // if our index is on the left side of the middle index
-            if (i < middle) {
-                leftList.set(i, arrayList.get(i));
-            }
-            // index is on right side of the middle index
-            else {
-                rightList.set(i, arrayList.get(i));
-            }
-        }
-        // recursive call to split up left and right sub-lists into even smaller lists
-        mergesort(leftList);
-        mergesort(rightList);
-        // combine the results of mergesort recursive calls
-        merge(leftList, rightList, arrayList);
-    }
-
-    /**
-     * Insertion sort method that is called when our merge sort reaches a certain threshold value.
-     * @param arrayList
-     * @param <T>
-     */
-    private static <T extends Comparable<? super T>> void insertionSort(ArrayList<T> arrayList) {
-        // iterate through each value in the list
-        for (int i = 1; i < arrayList.size(); i++) {
-            // tracker value that moves backwards through our list to compare our current value with all previous in list
-            for (int j = i; j > 0; j--) {
-                // use comparable to compare our current value at i with value at j - 1
-                // if our current item is "less than" our compared item, switch
-                if (arrayList.get(i).compareTo(arrayList.get(j - 1)) < 0) {
-                    T temp = arrayList.get(i);
-                    arrayList.add(i, arrayList.get(j -1));
-                    arrayList.add(j - 1, temp);
-                }
-                // our item is no longer less than the items that are on the left side of the list
-                else {
-                    break;
-                }
-            }
+        if (left < right) {
+            int middle = (left + right) / 2;
+            mergesort(arrayList, left, middle, storageList);
+            mergesort(arrayList, middle + 1, right, storageList);
+            merge(arrayList, left, middle, right, storageList);
         }
     }
 
     /**
-     * Private recursive method that contains the full implementation of merge sort.
-     * @param leftList
-     * @param rightList
+     *
      * @param arrayList
+     * @param left
+     * @param right
      * @param <T>
      */
-    private static <T extends Comparable<? super T>> void merge(ArrayList<T> leftList, ArrayList<T> rightList, ArrayList<T> arrayList) {
-        // get the sizes of the two lists that need to be sorted
-        int leftSize = leftList.size();
-        int rightSize = rightList.size();
-
-        // indexing terms for our sub-array lists
-        int l = 0;
-        int r = 0;
-        int i = 0;
-
-        // add terms into the list based off written conditions
-        while (l < leftSize && r < rightSize) {
-            // if our item in the left list is "less than" our item in the right list
-            if (leftList.get(l).compareTo(rightList.get(r)) < 0) {
-                // change our original array list to now have the left list item at the current index
-                arrayList.set(i, leftList.get(l));
-                i++;
-                l++;
+    private static <T extends Comparable<? super T>> void insertionSort(ArrayList<T> arrayList, int left, int right) {
+        for (int i = left + 1; i <= right; i++) {
+            T item = arrayList.get(i);
+            int j = i - 1;
+            while (j >= left && arrayList.get(j).compareTo(item) > 0) {
+                arrayList.set(j + 1, arrayList.get(j));
+                j--;
             }
-            // our item in the left list is "greater than" the item in the right list
-            else {
-                // change our original array list to now have the right list item at the current index
-                arrayList.set(i, rightList.get(r));
-                i++;
-                r++;
-            }
-        }
-
-        // check and add any remaining left elements
-        while (l < leftSize) {
-            arrayList.set(i, leftList.get(l));
-            i++;
-            l++;
-        }
-
-        // check and add any remaining right elements
-        while (r < rightSize) {
-            arrayList.set(i, rightList.get(r));
-            i++;
-            r++;
+            arrayList.set(j + 1, item);
         }
     }
+
+    /**
+     *
+     * @param arrayList
+     * @param left
+     * @param middle
+     * @param right
+     * @param storageList
+     * @param <T>
+     */
+    private static <T extends Comparable<? super T>> void merge(ArrayList<T> arrayList, int left, int middle, int right, ArrayList<T> storageList) {
+        int n1 = middle - left + 1;
+        int n2 = right - middle;
+
+        // clear the items in the storage list
+        storageList.clear();
+
+        // Merge elements from storageList and the right half of the original array back into the original array
+        int i = left, j = middle + 1;
+        while (i <= middle && j <= right) {
+            if (arrayList.get(i).compareTo(arrayList.get(j)) <= 0) {
+                storageList.add(arrayList.get(i));
+                i++;
+            }
+            else {
+                storageList.add(arrayList.get(j));
+                j++;
+            }
+        }
+
+        // Copy any remaining elements from storageList back to the original array
+        while (i <= middle) {
+            storageList.add(arrayList.get(i));
+            i++;
+        }
+        // Copy any remaining elements from storageList back to the original array
+        while (j <= right) {
+            storageList.add(arrayList.get(j));
+            j++;
+        }
+
+        for (int k = 0; k < storageList.size(); k++) {
+            arrayList.set(k + left, storageList.get(k));
+        }
+    }
+
     /**
      * This method performs a quicksort on the generic ArrayList given as input.
      * <p></p>
@@ -158,55 +143,89 @@ public class ArrayListSorter {
      * @param <T> arrayList - (ArrayList<T>) object that needs to be sorted
      */
     public static <T extends Comparable<? super T>> void quicksort(ArrayList<T> arrayList) {
-        // call helper methods to find the corresponding pivot chosen by the user
-        int pivot = findPivot(arrayList);
-
+        quicksort(arrayList, 0, arrayList.size() - 1);
     }
+    private static <T extends Comparable<? super T>> void quicksort(ArrayList<T> arrayList, int start, int end) {
+        if (end - start + 1 <= INSERTION_SORT_THRESHOLD) {
+            // Use insertion sort for small subarrays
+            insertionSort(arrayList, start, end);
+        }
+        else {
+            int pivotIndex = choosePivot(arrayList, start, end);
+            int partitionIndex = partition(arrayList, start, end, pivotIndex);
+            quicksort(arrayList, start, partitionIndex - 1);
+            quicksort(arrayList, partitionIndex + 1, end);
+        }
+    }
+    // Choose the pivot based on the selected strategy
 
     /**
-     * Helper method that is called by quicksort in order to find the corresponding pivot based off the input of a user.
+     *
      * @param arrayList
-     * @param option
+     * @param start
+     * @param end
      * @return
      * @param <T>
      */
-    private static <T extends Comparable<? super T>> int findPivot(ArrayList<T> arrayList) {
-        int pivot;
-        // use the median to find the pivot
-        if (option == 1) {
-            pivot = findMedian(arrayList);
+    private static <T extends Comparable<? super T>> int choosePivot(ArrayList<T> arrayList, int start, int end) {
+        // You can choose one of the following pivot selection strategies:
+        // 1. Random pivot
+        // 2. Median-of-three pivot
+        // 3. Last element as pivot
+
+        // using random pivot strategy:
+        if (PIVOT_SELECTION_SORT == 1) {
+            return start + new Random().nextInt(end - start + 1);
         }
-        // use the middle index of the arrayList as the pivot
-        else if (option == 2) {
-            pivot = (arrayList.size() -1) / 2;
+
+        // Example using median-of-three pivot strategy:
+        else if (PIVOT_SELECTION_SORT == 2) {
+            int middle = start + (end - start) / 2;
+            T leftValue = arrayList.get(start);
+            T middleValue = arrayList.get(middle);
+            T rightValue = arrayList.get(end);
+            if (middleValue.compareTo(leftValue) > 0 && middleValue.compareTo(rightValue) < 0) {
+                return middle;
+            }
+            else if (leftValue.compareTo(middleValue) > 0 && leftValue.compareTo(rightValue) < 0) {
+                return start;
+            }
+            else {
+                return end;
+            }
         }
-        // use the last value in the array list as the pivot
-        else {
-            pivot = arrayList.size() - 1;
-        }
-        return pivot;
+        // default case, use the last index in the array list
+        else
+            return end;
     }
 
     /**
-     * Helper method that finds the median value selected from the first, last, and middle index of the array list.
-     * Called by the helper method findPivot().
+     *
      * @param arrayList
+     * @param start
+     * @param end
+     * @param pivotIndex
      * @return
      * @param <T>
      */
-    private static <T extends Comparable<? super T>> int findMedian(ArrayList<T> arrayList) {
-        T high = arrayList.get(arrayList.size()-1);
-        T med = arrayList.get((arrayList.size() - 1) / 2);
-        T low = arrayList.get(0);
-        if (med.compareTo(high) < 0 && med.compareTo(low) > 0) {
-            return (arrayList.size() - 1)/ 2;
+    private static <T extends Comparable<? super T>> int partition(ArrayList<T> arrayList, int start, int end, int pivotIndex) {
+        T pivotValue = arrayList.get(pivotIndex);
+        T temp = arrayList.get(pivotIndex);
+        arrayList.set(pivotIndex, arrayList.get(end));
+        arrayList.set(end, temp);
+        int storeIndex = start;
+        for (int i = start; i < end; i++) {
+            if (arrayList.get(i).compareTo(pivotValue) < 0) {
+                temp = arrayList.get(i);
+                arrayList.set(i, arrayList.get(storeIndex));
+                arrayList.set(storeIndex, temp);
+                storeIndex++;
+            }
         }
-        else if (high.compareTo(med) < 0 && high.compareTo(low) > 0) {
-            return arrayList.size() - 1;
-        }
-        else {
-            return 0;
-        }
+        temp = arrayList.get(storeIndex);
+        arrayList.set(storeIndex, arrayList.get(end));
+        arrayList.set(end, temp);
+        return storeIndex;
     }
 
     /**
@@ -215,7 +234,11 @@ public class ArrayListSorter {
      * @return (ArrayList<Integer>) arrayList - object that contains values 1-size
      */
     public static ArrayList<Integer> generateAscending(int size) {
-        return null;
+        ArrayList<Integer> arrayList = new ArrayList<Integer>();
+        for (int i = 1; i <= size; i++) {
+            arrayList.add(i);
+        }
+        return arrayList;
     }
 
     /**
@@ -225,7 +248,13 @@ public class ArrayListSorter {
      * @return
      */
     public static ArrayList<Integer> generatePermuted(int size) {
-        return null;
+
+        ArrayList<Integer> arrayList = new ArrayList<Integer>();
+        for (int i = 1; i <= size; i++) {
+            arrayList.add(i);
+        }
+        shuffle(arrayList, new Random());
+        return arrayList;
     }
 
     /**
@@ -234,6 +263,10 @@ public class ArrayListSorter {
      * @return
      */
     public static ArrayList<Integer> generateDescending(int size) {
-        return null;
+        ArrayList<Integer> arrayList = new ArrayList<Integer>();
+        for (int i = size; i >= 1; i--) {
+            arrayList.add(i);
+        }
+        return arrayList;
     }
 }

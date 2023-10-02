@@ -3,6 +3,7 @@ package assign05;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,9 +20,17 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class ArrayListSorterTest {
 private ArrayList<Integer> integerList;
+private ArrayList<Integer> emptyIntegerList;
+private ArrayList<Integer> repeatedIntegerList;
+private ArrayList<Integer> sortedRepeatedIntegerList;
 private ArrayList<Integer> sortedIntegerList;
 private ArrayList<String> stringList;
+private ArrayList<String> emptyStringList;
+private ArrayList<String> repeatedStringList;
+private ArrayList<String> sortedRepeatedStringList;
 private ArrayList<String> sortedStringList;
+private ArrayList<Integer> ascendingIntegerList;
+private ArrayList<Integer> descendingIntegerList;
     @BeforeEach
     void setUp() {
         integerList = new ArrayList<Integer>();
@@ -31,6 +40,26 @@ private ArrayList<String> sortedStringList;
         integerList.add(3);
         integerList.add(8);
         integerList.add(2);
+
+        emptyIntegerList = new ArrayList<Integer>();
+
+        repeatedIntegerList = new ArrayList<Integer>();
+        repeatedIntegerList.add(1);
+        repeatedIntegerList.add(2);
+        repeatedIntegerList.add(1);
+        repeatedIntegerList.add(3);
+        repeatedIntegerList.add(1);
+        repeatedIntegerList.add(4);
+
+        sortedRepeatedIntegerList = new ArrayList<Integer>();
+        sortedRepeatedIntegerList.add(1);
+        sortedRepeatedIntegerList.add(1);
+        sortedRepeatedIntegerList.add(1);
+        sortedRepeatedIntegerList.add(2);
+        sortedRepeatedIntegerList.add(3);
+        sortedRepeatedIntegerList.add(4);
+
+
 
         sortedIntegerList = new ArrayList<Integer>();
         sortedIntegerList.add(1);
@@ -49,7 +78,23 @@ private ArrayList<String> sortedStringList;
         stringList.add("platypus");
         stringList.add("hillbilly");
 
+        emptyStringList = new ArrayList<String>();
 
+        repeatedStringList = new ArrayList<String>();
+        repeatedStringList.add("subway");
+        repeatedStringList.add("mcdonald's");
+        repeatedStringList.add("subway");
+        repeatedStringList.add("wendy's");
+        repeatedStringList.add("subway");
+        repeatedStringList.add("carl's jr");
+
+        sortedRepeatedStringList = new ArrayList<String>();
+        sortedRepeatedStringList.add("carl's jr");
+        sortedRepeatedStringList.add("mcdonald's");
+        sortedRepeatedStringList.add("subway");
+        sortedRepeatedStringList.add("subway");
+        sortedRepeatedStringList.add("subway");
+        sortedRepeatedStringList.add("wendy's");
 
         sortedStringList = new ArrayList<String>();
         sortedStringList.add("at");
@@ -59,6 +104,30 @@ private ArrayList<String> sortedStringList;
         sortedStringList.add("lose");
         sortedStringList.add("platypus");
         sortedStringList.add("zebra");
+
+
+        ascendingIntegerList = new ArrayList<Integer>();
+        ascendingIntegerList.add(1);
+        ascendingIntegerList.add(2);
+        ascendingIntegerList.add(3);
+        ascendingIntegerList.add(4);
+        ascendingIntegerList.add(5);
+        ascendingIntegerList.add(6);
+        ascendingIntegerList.add(7);
+        ascendingIntegerList.add(8);
+        ascendingIntegerList.add(9);
+
+
+        descendingIntegerList = new ArrayList<Integer>();
+        descendingIntegerList.add(9);
+        descendingIntegerList.add(8);
+        descendingIntegerList.add(7);
+        descendingIntegerList.add(6);
+        descendingIntegerList.add(5);
+        descendingIntegerList.add(4);
+        descendingIntegerList.add(3);
+        descendingIntegerList.add(2);
+        descendingIntegerList.add(1);
     }
 
     @Test
@@ -68,24 +137,65 @@ private ArrayList<String> sortedStringList;
     }
 
     @Test
+    void mergeSortEmptyInteger() {
+        ArrayList<Integer> emptyList = ArrayListSorter.generatePermuted(0);
+        ArrayListSorter.mergesort(emptyList);
+        assertArrayEquals(emptyIntegerList.toArray(), emptyList.toArray());
+    }
+
+    @Test
+    void mergeSortRepeatingInteger() {
+        ArrayListSorter.mergesort(repeatedIntegerList);
+        assertArrayEquals(repeatedIntegerList.toArray(), sortedRepeatedIntegerList.toArray());
+    }
+
+    @Test
     void mergeSortString() {
         ArrayListSorter.mergesort(stringList);
         assertArrayEquals(stringList.toArray(), sortedStringList.toArray());
     }
 
     @Test
-    void quicksort() {
+    void mergeSortEmptyString() {
+        ArrayList<String> emptyList = new ArrayList<String>();
+        ArrayListSorter.mergesort(emptyStringList);
+        assertArrayEquals(emptyStringList.toArray(), emptyList.toArray());
     }
 
     @Test
+    void mergeSortRepeatingString() {
+        ArrayListSorter.mergesort(repeatedStringList);
+        assertArrayEquals(repeatedStringList.toArray(), sortedRepeatedStringList.toArray());
+    }
+
+    @Test
+    void quicksortInteger() {
+        ArrayListSorter.quicksort(integerList);
+        assertArrayEquals(integerList.toArray(), sortedIntegerList.toArray());
+    }
+
+    @Test
+    void quicksortString() {
+        ArrayListSorter.quicksort(stringList);
+        assertArrayEquals(stringList.toArray(), sortedStringList.toArray());
+
+    }
+    @Test
     void generateAscending() {
+        ArrayList<Integer> generatedList = ArrayListSorter.generateAscending(9);
+        assertArrayEquals(generatedList.toArray(), ascendingIntegerList.toArray());
     }
 
     @Test
     void generatePermuted() {
+        ArrayList<Integer> generatedList = ArrayListSorter.generatePermuted(9);
+        Object[] generatedArray = generatedList.toArray();
+        assertTrue(ascendingIntegerList.contains(generatedArray[5]));
     }
 
     @Test
     void generateDescending() {
+        ArrayList<Integer> generatedList = ArrayListSorter.generateDescending(9);
+        assertArrayEquals(generatedList.toArray(), descendingIntegerList.toArray());
     }
 }
