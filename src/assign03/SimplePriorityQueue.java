@@ -2,6 +2,7 @@ package assign03;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -10,7 +11,7 @@ import java.util.NoSuchElementException;
  * @author Reynaldo Villarreal and Mikhail Ahmed
  * @version 2023-09-13
  */
-public class SimplePriorityQueue<E> implements PriorityQueue<E>{
+public class SimplePriorityQueue<E> implements PriorityQueue<E>, Iterable<E> {
 
     // Declaring object and primitive variables for Simple Priority Queue objects
     private E[] array;
@@ -29,13 +30,14 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E>{
         this.array = (E[]) new Object[this.arrSize];
         this.arrCount = 0;
     }
+
     /**
      * These constructors instantiate SimplePriorityQueue Object with a Comparator.
      *
      * @param cmp - The comparator object being passed in
      */
     @SuppressWarnings("unchecked")
-    public SimplePriorityQueue(Comparator<? super E> cmp){
+    public SimplePriorityQueue(Comparator<? super E> cmp) {
         this.arrSize = 10;
         this.array = (E[]) new Object[this.arrSize];
         this.cmp = cmp;
@@ -51,21 +53,20 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E>{
      * @return the integer based on the comparison
      */
     @SuppressWarnings("unchecked")
-    public int helpCompare (E o1, E o2){
+    public int helpCompare(E o1, E o2) {
         // if comparator is null
         if (this.cmp == null)
-            if(o2 == null)
-                return 0;
-        // Java's natural comparison due to comparator being null
-            else
-                return ((Comparable<? super E>)o1).compareTo(o2);
-
-        else
             if (o2 == null)
                 return 0;
+                // Java's natural comparison due to comparator being null
             else
-                // returns the comparator's result
-                return cmp.compare(o1, o2);
+                return ((Comparable<? super E>) o1).compareTo(o2);
+
+        else if (o2 == null)
+            return 0;
+        else
+            // returns the comparator's result
+            return cmp.compare(o1, o2);
     }
 
     /**
@@ -116,13 +117,13 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E>{
         if (this.arrCount + 1 == this.arrSize) {
             this.arrSize *= 2;
             E[] tempArray = (E[]) new Object[this.arrSize];
-            for(int i = 0; i < this.arrCount; i++){
+            for (int i = 0; i < this.arrCount; i++) {
                 tempArray[i] = this.array[i];
             }
             this.array = tempArray;
         }
         // insert the item at the correct index
-        for(int i = arrCount; i >= mid; i--){
+        for (int i = arrCount; i >= mid; i--) {
             this.array[i + 1] = this.array[i];
         }
         this.arrCount += 1;
@@ -141,16 +142,14 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E>{
         int low = 0;
         int high = thisArrayCount - 1;
         int mid;
-        while(low <= high) {
+        while (low <= high) {
             mid = (high + low) / 2;
             int result = helpCompare(item, thisArray[mid]);
-            if (result < 0){
+            if (result < 0) {
                 high = mid - 1;
-            }
-            else if (result == 0){
+            } else if (result == 0) {
                 return mid;
-            }
-            else{
+            } else {
                 low = mid + 1;
             }
         }
@@ -167,14 +166,14 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E>{
     public void insertAll(Collection<? extends E> coll) {
         // Translating the collection to an array that can be iterated through
         E[] collArray = (E[]) coll.toArray();
-        for(int i = 0; i < collArray.length; i++){
+        for (int i = 0; i < collArray.length; i++) {
             // insert the value into the object
             this.insert(collArray[i]);
         }
     }
 
     // method used in tests to help with comparisons of final results
-    public E[] getArray(){
+    public E[] getArray() {
         return this.array;
     }
 
@@ -231,7 +230,7 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E>{
     @Override
     public void clear() {
         // if the size of the array is 0 or there are no elements in the array
-        if(this.arrSize == 0 || this.arrCount == 0)
+        if (this.arrSize == 0 || this.arrCount == 0)
             // don't do anything
             return;
         // create a new blank array that will replace the current one in the object
@@ -240,5 +239,57 @@ public class SimplePriorityQueue<E> implements PriorityQueue<E>{
         this.arrCount = 0;
         this.arrSize = 10;
         this.array = newArray;
+    }
+
+    /**
+     * Returns an iterator over elements of type {@code T}.
+     *
+     * @return an Iterator.
+     */
+    @Override
+    public Iterator<E> iterator() {
+        return new PQIterator();
+    }
+
+    public class PQIterator implements Iterator<E> {
+        int next_index = 0;
+        boolean canRemove = false;
+
+        /**
+         * Returns {@code true} if the iteration has more elements.
+         * (In other words, returns {@code true} if {@link #next} would
+         * return an element rather than throwing an exception.)
+         *
+         * @return {@code true} if the iteration has more elements
+         */
+        @Override
+        public boolean hasNext() {
+            return next_index < size();
+        }
+
+        /**
+         * Returns the next element in the iteration.
+         *
+         * @return the next element in the iteration
+         * @throws NoSuchElementException if the iteration has no more elements
+         */
+        @Override
+        public E next() {
+            if (!hasNext())
+                throw new IllegalStateException();
+            canRemove = true;
+            E nextItem = (E) array[next_index];
+            next_index++;
+            return nextItem;
+        }
+
+        public void remove() {
+            if (!canRemove)
+                throw new IllegalStateException();
+            next_index--;
+            arrCount--;
+            for (int i = next_index; i < arrCount; i++)
+                array[i] = array[i + 1];
+        }
     }
 }
