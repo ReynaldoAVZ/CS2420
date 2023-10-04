@@ -41,6 +41,9 @@ public class ArrayListSorter {
     public static <T extends Comparable<? super T>> void mergesort(ArrayList<T> arrayList) {
         int size = arrayList.size();
         ArrayList<T> storageList = new ArrayList<T>(size);
+        for (int i = 0; i < size; i++) {
+            storageList.add(null);
+        }
         mergesort(arrayList, 0, arrayList.size() - 1, storageList);
     }
 
@@ -89,35 +92,38 @@ public class ArrayListSorter {
         int n1 = middle - left + 1;
         int n2 = right - middle;
 
-        // clear the items in the storage list
-        storageList.clear();
+        // Copy elements from the original array to the storageList
+        for (int i = 0; i < n1; i++) {
+            storageList.set(i, arrayList.get(left + i));
+        }
+
+        int i = 0, j = 0;
+        int k = left;
 
         // Merge elements from storageList and the right half of the original array back into the original array
-        int i = left, j = middle + 1;
-        while (i <= middle && j <= right) {
-            if (arrayList.get(i).compareTo(arrayList.get(j)) <= 0) {
-                storageList.add(arrayList.get(i));
+        while (i < n1 && j < n2) {
+            if (storageList.get(i).compareTo(arrayList.get(middle + 1 + j)) <= 0) {
+                arrayList.set(k, storageList.get(i));
                 i++;
-            }
-            else {
-                storageList.add(arrayList.get(j));
+            } else {
+                arrayList.set(k, arrayList.get(middle + 1 + j));
                 j++;
             }
+            k++;
         }
 
         // Copy any remaining elements from storageList back to the original array
-        while (i <= middle) {
-            storageList.add(arrayList.get(i));
+        while (i < n1) {
+            arrayList.set(k, storageList.get(i));
             i++;
-        }
-        // Copy any remaining elements from storageList back to the original array
-        while (j <= right) {
-            storageList.add(arrayList.get(j));
-            j++;
+            k++;
         }
 
-        for (int k = 0; k < storageList.size(); k++) {
-            arrayList.set(k + left, storageList.get(k));
+        // Copy any remaining elements from the right half of the original array (if any)
+        while (j < n2) {
+            arrayList.set(k, arrayList.get(middle + 1 + j));
+            j++;
+            k++;
         }
     }
 
