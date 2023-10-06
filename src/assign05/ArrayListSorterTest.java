@@ -33,6 +33,8 @@ private ArrayList<Integer> ascendingIntegerList;
 private ArrayList<Integer> descendingIntegerList;
     @BeforeEach
     void setUp() {
+
+        // Integer section for mergesort and quicksort
         integerList = new ArrayList<Integer>();
         integerList.add(1);
         integerList.add(5);
@@ -40,6 +42,7 @@ private ArrayList<Integer> descendingIntegerList;
         integerList.add(3);
         integerList.add(8);
         integerList.add(2);
+        integerList.add(-6);
 
         emptyIntegerList = new ArrayList<Integer>();
 
@@ -59,9 +62,8 @@ private ArrayList<Integer> descendingIntegerList;
         sortedRepeatedIntegerList.add(3);
         sortedRepeatedIntegerList.add(4);
 
-
-
         sortedIntegerList = new ArrayList<Integer>();
+        sortedIntegerList.add(-6);
         sortedIntegerList.add(1);
         sortedIntegerList.add(2);
         sortedIntegerList.add(3);
@@ -69,6 +71,7 @@ private ArrayList<Integer> descendingIntegerList;
         sortedIntegerList.add(7);
         sortedIntegerList.add(8);
 
+        // String section for mergesort and quicksort
         stringList = new ArrayList<String>();
         stringList.add("zebra");
         stringList.add("at");
@@ -105,7 +108,7 @@ private ArrayList<Integer> descendingIntegerList;
         sortedStringList.add("platypus");
         sortedStringList.add("zebra");
 
-
+        // Integer list for generateAscending()
         ascendingIntegerList = new ArrayList<Integer>();
         ascendingIntegerList.add(1);
         ascendingIntegerList.add(2);
@@ -117,7 +120,7 @@ private ArrayList<Integer> descendingIntegerList;
         ascendingIntegerList.add(8);
         ascendingIntegerList.add(9);
 
-
+        // Integer list for generateDescending()
         descendingIntegerList = new ArrayList<Integer>();
         descendingIntegerList.add(9);
         descendingIntegerList.add(8);
@@ -131,26 +134,26 @@ private ArrayList<Integer> descendingIntegerList;
     }
 
     @Test
-    void mergeSortInteger() {
+    void mergesortInteger() {
         ArrayListSorter.mergesort(integerList);
         assertArrayEquals(integerList.toArray(), sortedIntegerList.toArray());
     }
 
     @Test
-    void mergeSortEmptyInteger() {
+    void mergesortEmptyInteger() {
         ArrayList<Integer> emptyList = ArrayListSorter.generatePermuted(0);
         ArrayListSorter.mergesort(emptyList);
         assertArrayEquals(emptyIntegerList.toArray(), emptyList.toArray());
     }
 
     @Test
-    void mergeSortRepeatingInteger() {
+    void mergesortRepeatedInteger() {
         ArrayListSorter.mergesort(repeatedIntegerList);
         assertArrayEquals(repeatedIntegerList.toArray(), sortedRepeatedIntegerList.toArray());
     }
 
     @Test
-    void mergeSortString() {
+    void mergesortString() {
         ArrayListSorter.mergesort(stringList);
         assertArrayEquals(stringList.toArray(), sortedStringList.toArray());
     }
@@ -163,7 +166,7 @@ private ArrayList<Integer> descendingIntegerList;
     }
 
     @Test
-    void mergeSortRepeatingString() {
+    void mergeSortRepeatedString() {
         ArrayListSorter.mergesort(repeatedStringList);
         assertArrayEquals(repeatedStringList.toArray(), sortedRepeatedStringList.toArray());
     }
@@ -175,15 +178,42 @@ private ArrayList<Integer> descendingIntegerList;
     }
 
     @Test
+    void quicksortEmptyInteger() {
+        ArrayList<Integer> emptyList = new ArrayList<>();
+        ArrayListSorter.quicksort(emptyIntegerList);
+        assertArrayEquals(emptyIntegerList.toArray(), emptyList.toArray());
+    }
+
+    @Test
+    void quicksortRepeatedInteger() {
+        ArrayListSorter.quicksort(repeatedIntegerList);
+        assertArrayEquals(repeatedIntegerList.toArray(), sortedRepeatedIntegerList.toArray());
+    }
+
+    @Test
     void quicksortString() {
         ArrayListSorter.quicksort(stringList);
         assertArrayEquals(stringList.toArray(), sortedStringList.toArray());
+    }
+
+    @Test
+    void quicksortEmptyString() {
+        ArrayList<String> emptyList = new ArrayList<>();
+        ArrayListSorter.quicksort(emptyStringList);
+        assertArrayEquals(emptyStringList.toArray(), emptyList.toArray());
+    }
+
+    @Test
+    void quicksortRepeatedString() {
+        ArrayListSorter.quicksort(repeatedStringList);
+        assertArrayEquals(repeatedStringList.toArray(), sortedRepeatedStringList.toArray());
 
     }
     @Test
     void generateAscending() {
         ArrayList<Integer> generatedList = ArrayListSorter.generateAscending(9);
         assertArrayEquals(generatedList.toArray(), ascendingIntegerList.toArray());
+        assertTrue(generatedList.size() == 9);
     }
 
     @Test
@@ -191,11 +221,32 @@ private ArrayList<Integer> descendingIntegerList;
         ArrayList<Integer> generatedList = ArrayListSorter.generatePermuted(9);
         Object[] generatedArray = generatedList.toArray();
         assertTrue(ascendingIntegerList.contains(generatedArray[5]));
+        assertTrue(generatedArray.length == 9);
     }
 
     @Test
     void generateDescending() {
         ArrayList<Integer> generatedList = ArrayListSorter.generateDescending(9);
         assertArrayEquals(generatedList.toArray(), descendingIntegerList.toArray());
+        assertTrue(generatedList.size() == 9);
+    }
+
+    @Test
+    void generateAscendingZero() {
+        ArrayList<Integer> generatedList = ArrayListSorter.generateAscending(0);
+        ArrayList<Integer> list = new ArrayList<>();
+        assertArrayEquals(generatedList.toArray(), list.toArray());
+    }
+    @Test
+    void generatePermutedZero() {
+        ArrayList<Integer> generatedList = ArrayListSorter.generatePermuted(0);
+        ArrayList<Integer> list = new ArrayList<>();
+        assertArrayEquals(generatedList.toArray(), list.toArray());
+    }
+    @Test
+    void generateDescendingZero() {
+        ArrayList<Integer> generatedList = ArrayListSorter.generateDescending(0);
+        ArrayList<Integer> list = new ArrayList<>();
+        assertArrayEquals(generatedList.toArray(), list.toArray());
     }
 }

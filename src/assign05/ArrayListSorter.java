@@ -1,7 +1,6 @@
 package assign05;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Random;
 import static java.util.Collections.shuffle;
 
@@ -20,11 +19,14 @@ import static java.util.Collections.shuffle;
  * <p></p>
  *
  * @author Reynaldo Villarreal Zambrano and Mikhail Ahmed
- * @version 2023-10-00
+ * @version 2023-10-05
  */
 public class ArrayListSorter {
-    private static final int INSERTION_SORT_THRESHOLD = 2;
-    private static final int PIVOT_SELECTION_SORT = 10;
+
+    // Initializing the threshold value for mergesort and pivot selection
+    private static int INSERTION_SORT_THRESHOLD = 1000;
+    private static int PIVOT_SELECTION = 2;
+
     /**
      * This method performs a merge sort on the generic ArrayList given as input.
      * <p></p>
@@ -39,19 +41,33 @@ public class ArrayListSorter {
      * @param <T> arrayList - (ArrayList<T>) object that needs to be sorted
      */
     public static <T extends Comparable<? super T>> void mergesort(ArrayList<T> arrayList) {
+        // Pre-allocating the memory and space in the arraylist
         int size = arrayList.size();
         ArrayList<T> storageList = new ArrayList<T>(size);
         for (int i = 0; i < size; i++) {
             storageList.add(null);
         }
+        // Calling the recursive method within mergesort
         mergesort(arrayList, 0, arrayList.size() - 1, storageList);
     }
 
+    /**
+     * The method mergesort() is the private driver method that is recursively called in order to correctly implement
+     * the mergesort algorithm.
+     *
+     * @param arrayList The arraylist that is passed in
+     * @param left The lower bound of the sublist
+     * @param right The upper bound of the sublist
+     * @param storageList the storage list being used to contain temporary items in it used to sort
+     * @param <T> Generic type so any object can be used
+     */
     private static <T extends Comparable<? super T>> void mergesort(ArrayList<T> arrayList, int left, int right, ArrayList<T> storageList) {
+        // When the appropriate length of the sublist is reached, insertion sort is called
         if (right - left <= INSERTION_SORT_THRESHOLD) {
             insertionSort(arrayList, left, right);
             return;
         }
+        // Recursively calling mergesort if and only if the left is less than right
         if (left < right) {
             int middle = (left + right) / 2;
             mergesort(arrayList, left, middle, storageList);
@@ -61,13 +77,15 @@ public class ArrayListSorter {
     }
 
     /**
+     * This is the insertion sort method that is utilized by the mergesort method above.
      *
-     * @param arrayList
-     * @param left
-     * @param right
-     * @param <T>
+     * @param arrayList The arraylist that is passed in
+     * @param left The lower bound of the sublist
+     * @param right The upper bound of the sublist
+     * @param <T> Generic type so any object can be used
      */
     private static <T extends Comparable<? super T>> void insertionSort(ArrayList<T> arrayList, int left, int right) {
+        // Comparing the value at j with the item, setting, and decrementing if that's the case
         for (int i = left + 1; i <= right; i++) {
             T item = arrayList.get(i);
             int j = i - 1;
@@ -80,13 +98,16 @@ public class ArrayListSorter {
     }
 
     /**
+     * This method is called recursively by the mergesort method above and is responsible for merging the subunits
+     * of the sublist.
      *
-     * @param arrayList
-     * @param left
-     * @param middle
-     * @param right
-     * @param storageList
-     * @param <T>
+     *
+     * @param arrayList the arraylist being passed in
+     * @param left the lower bound of the list
+     * @param middle the middle bound of the list between left and right bounds
+     * @param right the upper bound of the list
+     * @param storageList the list the contents were stored into before sorting
+     * @param <T> Generic type so any object may be used
      */
     private static <T extends Comparable<? super T>> void merge(ArrayList<T> arrayList, int left, int middle, int right, ArrayList<T> storageList) {
         int n1 = middle - left + 1;
@@ -152,26 +173,21 @@ public class ArrayListSorter {
         quicksort(arrayList, 0, arrayList.size() - 1);
     }
     private static <T extends Comparable<? super T>> void quicksort(ArrayList<T> arrayList, int start, int end) {
-        if (end - start + 1 <= INSERTION_SORT_THRESHOLD) {
-            // Use insertion sort for small subarrays
-            insertionSort(arrayList, start, end);
-        }
-        else {
-            int pivotIndex = choosePivot(arrayList, start, end);
-            int partitionIndex = partition(arrayList, start, end, pivotIndex);
+        if (start < end) {
+            int partitionIndex = partition(arrayList, start, end);
             quicksort(arrayList, start, partitionIndex - 1);
             quicksort(arrayList, partitionIndex + 1, end);
         }
     }
-    // Choose the pivot based on the selected strategy
-
     /**
+     * This method is a helper method that determines the pivot value that will be used based off a user input in the
+     * PIVOT_SELECTION variable.
      *
-     * @param arrayList
-     * @param start
-     * @param end
-     * @return
-     * @param <T>
+     * @param arrayList the array list being passed in
+     * @param start the beginning index of the sublist
+     * @param end the last index of the sublist
+     * @return the correct pivot index based off the user selection.
+     * @param <T> Generic type so any object can be used
      */
     private static <T extends Comparable<? super T>> int choosePivot(ArrayList<T> arrayList, int start, int end) {
         // You can choose one of the following pivot selection strategies:
@@ -180,12 +196,12 @@ public class ArrayListSorter {
         // 3. Last element as pivot
 
         // using random pivot strategy:
-        if (PIVOT_SELECTION_SORT == 1) {
+        if (PIVOT_SELECTION == 1) {
             return start + new Random().nextInt(end - start + 1);
         }
 
-        // Example using median-of-three pivot strategy:
-        else if (PIVOT_SELECTION_SORT == 2) {
+        // using median-of-three pivot strategy:
+        else if (PIVOT_SELECTION == 2) {
             int middle = start + (end - start) / 2;
             T leftValue = arrayList.get(start);
             T middleValue = arrayList.get(middle);
@@ -206,36 +222,52 @@ public class ArrayListSorter {
     }
 
     /**
+     * This partition method is utilized by the quicksort method above and splits the array into two parts without
+     * counting the index containing the pivot.
      *
-     * @param arrayList
-     * @param start
-     * @param end
-     * @param pivotIndex
-     * @return
-     * @param <T>
+     * @param arrayList the arraylist being passed in
+     * @param start the beginning index of the sublist
+     * @param end the last index of the sublist
+     * @return the int value of where the pivot's correct position is
+     * @param <T> Generic type so any object can be used
      */
-    private static <T extends Comparable<? super T>> int partition(ArrayList<T> arrayList, int start, int end, int pivotIndex) {
-        T pivotValue = arrayList.get(pivotIndex);
+    private static <T extends Comparable<? super T>> int partition(ArrayList<T> arrayList, int start, int end) {
+        int pivotIndex = choosePivot(arrayList, start, end);
+
+        // Move the pivot value to the end
         T temp = arrayList.get(pivotIndex);
         arrayList.set(pivotIndex, arrayList.get(end));
         arrayList.set(end, temp);
-        int storeIndex = start;
-        for (int i = start; i < end; i++) {
-            if (arrayList.get(i).compareTo(pivotValue) < 0) {
-                temp = arrayList.get(i);
-                arrayList.set(i, arrayList.get(storeIndex));
-                arrayList.set(storeIndex, temp);
-                storeIndex++;
+        pivotIndex = end;
+        int lower = start;
+        int upper = pivotIndex - 1;
+        while (lower <= upper) {
+            // Find the first element from the left that is greater than or equal to the pivot
+            while (lower < pivotIndex && arrayList.get(lower).compareTo(arrayList.get(pivotIndex)) <= 0) {
+                lower++;
+            }
+            // Find the first element from the right that is less than or equal to the pivot
+            while (upper >= start && arrayList.get(upper).compareTo(arrayList.get(pivotIndex)) > 0) {
+                upper--;
+            }
+            // perform an element swap
+            if (lower < upper) {
+                temp = arrayList.get(lower);
+                arrayList.set(lower, arrayList.get(upper));
+                arrayList.set(upper, temp);
             }
         }
-        temp = arrayList.get(storeIndex);
-        arrayList.set(storeIndex, arrayList.get(end));
-        arrayList.set(end, temp);
-        return storeIndex;
+        // place the pivot value into the correct index
+        temp = arrayList.get(lower);
+        arrayList.set(lower, arrayList.get(pivotIndex));
+        arrayList.set(pivotIndex, temp);
+
+        return lower; // Return the index where the pivot element is now located
     }
 
     /**
      * This method generates and returns an ArrayList of integers 1 to size in ascending order.
+     *
      * @param size - number of objects in the (ArrayList<Integer>) object.
      * @return (ArrayList<Integer>) arrayList - object that contains values 1-size
      */
@@ -250,11 +282,11 @@ public class ArrayListSorter {
     /**
      * This method generates and returns an ArrayList of integers 1 to size in permuted order (i,e., randomly ordered).
      * We may adapt the shuffle method written in Class Meeting 8 or make use of Java's Collections.shuffle method.
-     * @param size
-     * @return
+     *
+     * @param size represents the number of elements in the ArrayList
+     * @return the ArrayList in a random, permuted order
      */
     public static ArrayList<Integer> generatePermuted(int size) {
-
         ArrayList<Integer> arrayList = new ArrayList<Integer>();
         for (int i = 1; i <= size; i++) {
             arrayList.add(i);
@@ -265,8 +297,9 @@ public class ArrayListSorter {
 
     /**
      * This method generates and returns an ArrayList of integers 1 to size in descending order.
-     * @param size
-     * @return
+     *
+     * @param size represents the number of elements in the ArrayList
+     * @return the ArrayList in descending order from size to 1
      */
     public static ArrayList<Integer> generateDescending(int size) {
         ArrayList<Integer> arrayList = new ArrayList<Integer>();
