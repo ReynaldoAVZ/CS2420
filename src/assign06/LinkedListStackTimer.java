@@ -1,6 +1,5 @@
 package assign06;
 
-import java.util.ArrayList;
 public class LinkedListStackTimer {
 
     public static void main(String[] args) {
@@ -15,15 +14,18 @@ public class LinkedListStackTimer {
 
             // Now, run the test.
 
-            long timesToLoop = 1000;
-            ArrayStack<Integer> arrayStack = new ArrayStack<>();
+            long timesToLoop = 10;
+            LinkedListStack<Integer> LLS = new LinkedListStack<>();
+            ArrayStack<Integer> AS = new ArrayStack<>();
             startTime = System.nanoTime();
 
             for (long i = 0; i < timesToLoop; i++) {
                 for (int j = 0; j < n; j++) {
-                    arrayStack.push(j);
-                    arrayStack.pop();
+                    AS.push(j);
                 }
+//                for (int r = 0; r < n; r++) {
+//                    AS.pop();
+//                }
             }
 
             midpointTime = System.nanoTime();
@@ -31,8 +33,10 @@ public class LinkedListStackTimer {
             // Run an empty loop to capture the cost of running the loop.
 
             for (long i = 0; i < timesToLoop; i++) { // empty block
-                for (int t = 0; t < n; t++) {
-                    arrayStack.push(t);
+//                for (int t = 0; t < n; t++) {
+//                    LLS.push(t);
+//                }
+                for (int r = 0; r < n; r++) {
                 }
             }
 
@@ -42,7 +46,7 @@ public class LinkedListStackTimer {
             // from the cost of running the loop and computing square roots.
             // Average it over the number of runs.
 
-            double averageTime = ((midpointTime - startTime) - (stopTime - midpointTime)) / timesToLoop;
+            double averageTime = (((midpointTime - startTime) - (stopTime - midpointTime)) / timesToLoop) / n;
 
             System.out.println(n + "\t" + averageTime);
         }

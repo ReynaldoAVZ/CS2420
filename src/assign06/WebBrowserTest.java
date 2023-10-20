@@ -2,12 +2,17 @@ package assign06;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.NoSuchElementException;
-
 import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * This class represents a Junit testing class for WebBrowser methods and exceptions.
+ *
+ * @author Reynaldo Villarreal Zambrano and Mikhail Ahmed
+ * @version 2023-10-19
+ */
 
 class WebBrowserTest {
     private WebBrowser WB;
@@ -23,6 +28,8 @@ class WebBrowserTest {
     private URL url5;
     @BeforeEach
     void setUp() throws MalformedURLException {
+
+        // Setting up WebBrowser and SinglyLinkedList Objects
         WB = new WebBrowser();
 
         history = new SinglyLinkedList<>();
@@ -45,7 +52,7 @@ class WebBrowserTest {
         history2.insertFirst(url4);
         history2.insertFirst(url5);
 
-        emptyHistory = new SinglyLinkedList<URL>();
+        emptyHistory = new SinglyLinkedList<>();
 
         WBHistoryEmpty = new WebBrowser(emptyHistory);
     }

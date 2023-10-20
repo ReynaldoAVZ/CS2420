@@ -2,21 +2,18 @@ package assign06;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.NoSuchElementException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This class represents a JUnit testing class for the LinkedListStack and all the corresponding methods.
  *
  * @author Reynaldo Villarreal Zambrano and Mikhail Ahmed
- * @version 2023-10-00
+ * @version 2023-10-19
  */
 class LinkedListStackTest {
     private LinkedListStack<Integer> LLS;
     private LinkedListStack<Integer> RealLLS;
-    private Integer[] intSLLRealArray;
     @BeforeEach
     void setUp() {
         LLS = new LinkedListStack<>();
@@ -33,7 +30,7 @@ class LinkedListStackTest {
         RealLLS.push(4);
         RealLLS.push(5);
 
-        intSLLRealArray = new Integer[]{};
+        Integer[] intSLLRealArray = new Integer[]{};
     }
 
     @Test
@@ -96,6 +93,13 @@ class LinkedListStackTest {
     @Test
     void size() {
         int size = 5;
+        assertEquals(size, LLS.size());
+    }
+
+    @Test
+    void zeroSize() {
+        int size = 0;
+        LLS.clear();
         assertEquals(size, LLS.size());
     }
 }

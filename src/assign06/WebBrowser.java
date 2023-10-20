@@ -5,13 +5,15 @@ import java.util.NoSuchElementException;
 
 /**
  * This Java class represents a Web Browser that is meant to help simulate the behavior of a real web browser.
- * This class has built in methods and is backed by 2 instances of a stack, one to help simulate the behavior of
- * a browsers back button and the other to help simulate the behavior of a browsers forward button.
+ * This class has built in methods and is backed by 2 instances of a LinkedListStack, one to help simulate the behavior of
+ * a browsers back button and the other to help simulate the behavior of a browsers forward button. Also has a single URL
+ * object that represents the current website that a user would be on.
  * <p></p>
  * @author Reynaldo Villarreal Zambrano and Mikhail Ahmed
  * @version 2023-10-00
  */
 public class WebBrowser {
+    // instantiate instance variables in WebBrowser
     private LinkedListStack<URL> forward;
     private LinkedListStack<URL> backward;
     private URL current;
@@ -37,10 +39,10 @@ public class WebBrowser {
         for(int i = history.size() - 1; i > 0; i--) {
             this.backward.push(history.get(i));
         }
+        // check and make sure that the history SLL is not empty such that the first element can be indexed out
         if (!history.isEmpty()) {
             this.current = history.get(0);
         }
-
     }
 
     /**
@@ -49,10 +51,12 @@ public class WebBrowser {
      * @param webpage - URL webpage that is currently being visited.
      */
     public void visit(URL webpage) {
+        // when we visit a new URL, the forward LLS must be cleared
         this.forward.clear();
         if (current != null) {
             this.backward.push(current);
         }
+        // update our current website to be the new website just visited
         this.current = webpage;
     }
 
@@ -63,9 +67,13 @@ public class WebBrowser {
      * @throws NoSuchElementException if there is no previously-visited URL
      */
     public URL back() throws NoSuchElementException {
+        // get the head of the backward LLS and pop it out (or assign the error if no more URLs are inside the LLS)
         URL page = this.backward.pop();
+        // add the current website that the user was on into the forward LLS
         this.forward.push(current);
+        // assign our current website that user is on to be the value that was popped from the backward LLS
         current = page;
+        // return the page the user is now on
         return current;
     }
 
@@ -76,9 +84,13 @@ public class WebBrowser {
      * @throws NoSuchElementException if there are no elements to be popped from the forward LinkedListStack<URL>
      */
     public URL forward() throws NoSuchElementException {
+        // get the head of the forward LLS and pop it out (or assign the error if no more URLs are inside the LLS)
         URL page = this.forward.pop();
+        // add the current website that the user was on into the backward LLS
         this.backward.push(current);
+        // assign our current website that user is on to be the value that was popped from the forward LLS
         current = page;
+        // return the page the user is now on
         return current;
     }
 
@@ -97,20 +109,26 @@ public class WebBrowser {
         SinglyLinkedList<URL> history = new SinglyLinkedList<>();
         URL val;
         int size = backward.size();
+        // iterate through the backward LLS and pop all values
         for(int i = 0; i < size; i++) {
             val = this.backward.pop();
             backwardTemp1.push(val);
         }
         int temp_size = backwardTemp1.size();
+        // iterate through the temporary LLS in order to build up original backward LLS and history that will be returned
+        // in correct order
         for(int i = 0; i < temp_size; i++) {
             val = backwardTemp1.pop();
             history.insertFirst(val);
             backwardTemp2.push(val);
         }
+        // assign the backward LLS to now point to backwardTemp2
         this.backward = backwardTemp2;
+        // make sure that the current value is not null before adding it to the front of the history SLL
         if (current != null) {
             history.insertFirst(current);
         }
+        // return the SLL that now contains the history of URLs visited in correct order
         return history;
     }
 }

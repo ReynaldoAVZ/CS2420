@@ -1,20 +1,17 @@
 package assign06;
 
-import assign04.LargestNumberSolver;
-import assign04.OutOfRangeException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This class represents a JUnit testing class for the SinglyLinkedList and all the corresponding methods.
  *
  * @author Reynaldo Villarreal Zambrano and Mikhail Ahmed
- * @version 2023-10-00
+ * @version 2023-10-19
  */
 class SinglyLinkedListTest {
     private SinglyLinkedList<Integer> intSLLReal;
@@ -207,7 +204,6 @@ class SinglyLinkedListTest {
         iterReal.remove();
         iterReal.next();
         iterReal.remove();
-        Object[] result = intSLLReal.toArray();
         assertArrayEquals(real, intSLLReal.toArray());
     }
 
@@ -220,7 +216,15 @@ class SinglyLinkedListTest {
                 iterReal.remove();
             }
         }
-        Object[] result = intSLLReal.toArray();
         assertArrayEquals(real, intSLLReal.toArray());
+    }
+
+    @Test
+    void iteratorError() {
+        iterReal.next();
+        iterReal.remove();
+        assertThrows(IllegalStateException.class, () -> {
+            iterReal.remove();
+        });
     }
 }
