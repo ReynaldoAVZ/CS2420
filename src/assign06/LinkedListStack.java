@@ -3,16 +3,16 @@ package assign06;
 import java.util.NoSuchElementException;
 
 /**
- * This Java class represents a Linked List Stack that has built in methods to use different functions of a
- * Singly Linked List. This class is backed by an object of SinglyLinkedList.
+ * This Java class represents a LinkedListStack that has built in methods to use different functions of a
+ * SinglyLinkedList. This class is backed by an object of SinglyLinkedList.
  * <p></p>
  *
  * @author Reynaldo Villarreal Zambrano and Mikhail Ahmed
- * @version 2023-10-00
+ * @version 2023-10-19
  */
 public class LinkedListStack<E> implements Stack<E> {
+    // Initializing the SinglyLinkedList structure that backs this class
     private SinglyLinkedList<E> SLL;
-
 
     /**
      * Constructor method for creating a LinkedListStack backed by a SinglyLinkedList

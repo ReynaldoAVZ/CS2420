@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
  * object that represents the current website that a user would be on.
  * <p></p>
  * @author Reynaldo Villarreal Zambrano and Mikhail Ahmed
- * @version 2023-10-00
+ * @version 2023-10-19
  */
 public class WebBrowser {
     // instantiate instance variables in WebBrowser
@@ -22,6 +22,7 @@ public class WebBrowser {
      * This constructor creates a new web browser with no previously-visited webpages and no webpages to visit next.
      */
     public WebBrowser() {
+        // Creating forward and backwards stacks for WebBrowser objects
         this.forward = new LinkedListStack<>();
         this.backward = new LinkedListStack<>();
         this.current = null;
@@ -36,6 +37,7 @@ public class WebBrowser {
     public WebBrowser(SinglyLinkedList<URL> history) {
         this.forward = new LinkedListStack<>();
         this.backward = new LinkedListStack<>();
+        // Iterating to add all the contents into backward stack except the first element
         for(int i = history.size() - 1; i > 0; i--) {
             this.backward.push(history.get(i));
         }
@@ -53,6 +55,7 @@ public class WebBrowser {
     public void visit(URL webpage) {
         // when we visit a new URL, the forward LLS must be cleared
         this.forward.clear();
+        // Adding current webpage into backward stack if the current page is not null
         if (current != null) {
             this.backward.push(current);
         }
@@ -104,16 +107,19 @@ public class WebBrowser {
      * website being visited.
      */
     public SinglyLinkedList<URL> history() {
+        // initializing temporary LLS in order to assign correct history and maintain original LLS for backward stack
         LinkedListStack<URL> backwardTemp1 = new LinkedListStack<>();
         LinkedListStack<URL> backwardTemp2 = new LinkedListStack<>();
         SinglyLinkedList<URL> history = new SinglyLinkedList<>();
         URL val;
+        // declaring a size variable that will not change, due to the fact that the size of backward LLS changes through the loop
         int size = backward.size();
         // iterate through the backward LLS and pop all values
         for(int i = 0; i < size; i++) {
             val = this.backward.pop();
             backwardTemp1.push(val);
         }
+        // tracking backwardTemp1 size which is varying in the loop
         int temp_size = backwardTemp1.size();
         // iterate through the temporary LLS in order to build up original backward LLS and history that will be returned
         // in correct order
