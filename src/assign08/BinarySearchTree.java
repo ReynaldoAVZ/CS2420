@@ -4,9 +4,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 
+/**
+ *
+ * @param <Type>
+ *
+ * @author Reynaldo Villarreal Zambrano and Mikhail Ahmed
+ */
 public class BinarySearchTree<Type extends Comparable<? super Type>> implements SortedSet<Type> {
     private BinaryNode<Type> root;
     private int size = 0;
+    private ArrayList<Type> arrayList;
+
     /**
      * Ensures that this set contains the specified item.
      *
@@ -18,6 +26,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
     public boolean add(Type item) {
         if (this.root == null) {
             this.root = new BinaryNode<>(item);
+            this.size++;
             return true;
         }
         BinaryNode<Type> currNode = this.root;
@@ -28,6 +37,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
         }
         return result;
     }
+
     private boolean add(BinaryNode<Type> currNode, BinaryNode<Type> item) {
         Type itemVal = item.getData();
         if (currNode == null) {
@@ -61,8 +71,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
             else if (currNode.getRightChild() != null) {
                 return this.add(currNode.getRightChild(), item);
             }
-        }
-        else { // a comparison results in 0 (currNode == item)
+        } else { // a comparison results in 0 (currNode == item)
             return false;
         }
         return false;
@@ -96,6 +105,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
     public void clear() {
         this.root = null;
         this.size = 0;
+        this.arrayList = null;
     }
 
     /**
@@ -118,14 +128,13 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
         }
         if (item.compareTo(currentRoot.getData()) < 0) {
             return this.contains(currentRoot.getLeftChild(), item);
-        }
-        else if (item.compareTo(currentRoot.getData()) > 0) {
+        } else if (item.compareTo(currentRoot.getData()) > 0) {
             return this.contains(currentRoot.getRightChild(), item);
-        }
-        else {
+        } else {
             return true;
         }
     }
+
     /**
      * Determines if for each item in the specified collection, there is an item in
      * this set that is equal to it.
@@ -196,69 +205,117 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
             return false;
         // call private recursive method that removes the item
         boolean result = this.remove(this.root, item);
+        // if we did remove something, decrement the size
         if (result == true)
             this.size--;
+        // return the boolean
         return result;
     }
 
+    /**
+     * This Remove method is a private recursive method that removes an element from the BST.
+     *
+     * @param currNode
+     * @param item
+     * @return
+     */
     private boolean remove(BinaryNode<Type> currNode, Type item) {
+        // if the currNode is null, it means there's no such node in the BST that matches item
         if (currNode == null) {
             return false;
         }
+        // if the item value is less than the currNode, move left
         else if (item.compareTo(currNode.getData()) < 0) {
+            // recursive call on left node of currNode and item
             boolean result = this.remove(currNode.getLeftChild(), item);
+            // if an item was removed and the new leftChild value is null, make the object null
             if (result == true && currNode.getLeftChild().getData() == null) {
                 currNode.setLeftChild(null);
             }
+            // return the result of the final recursive call
             return result;
         }
+        // if the item value is greater than the currNode, move right
         else if (item.compareTo(currNode.getData()) > 0) {
+            // recursive call on the right node of the currNode and item
             boolean result = this.remove(currNode.getRightChild(), item);
+            // if an item was removed and the new rightChild value is null, make the object null
             if (result == true && currNode.getRightChild().getData() == null) {
                 currNode.setRightChild(null);
             }
+            // return the result of the final recursive call
             return result;
-        }
-        else { // node was found (item == currNode value)
+        } else { // node was found (item == currNode value)
             // check 3 cases: leaf node, one child, two children
 
             // case 1: no children
             if (currNode.getLeftChild() == null && currNode.getRightChild() == null) {
                 currNode.setData(null);
+                currNode = null;
                 return true;
             }
-            // one child on the right
+            // one child on the right (true if the item we're removing has two children) and replaces with its successor
             else if (currNode.getRightChild() != null) {
+                // find the successorNode that would replace currNode (using private helper method)
                 BinaryNode<Type> successorNode = this.findSuccessor(currNode);
+                // get the value of the successorNode
                 Type successorVal = successorNode.getData();
+                // remove the successorNode from the BST
                 boolean result = this.remove(currNode.getRightChild(), successorVal);
+                // set the currNode value to be the successor value
                 currNode.setData(successorVal);
+                // return the result of the final recursive call
                 return result;
             }
-            // one child on the left
+            // one child on the left (true if the item we're removing only has a left child) and replaces with its predecessor
             else {
+                // find the predecessorNode that would replace currNode (using private helper method)
                 BinaryNode<Type> predecessorNode = this.findPredecessor(currNode);
+                // get the value of the predecessorNode
                 Type predecessorVal = predecessorNode.getData();
+                // remove the predecessorNode from the BST
                 boolean result = this.remove(currNode.getLeftChild(), predecessorVal);
+                // set the currNode value to be the predecessor value
                 currNode.setData(predecessorVal);
+                // return the result of the final recursive call
                 return result;
             }
         }
     }
 
+    /**
+     * The findPredecessor method is a private helper method that finds the predecessor node that should replace the node
+     * which we are trying to remove from the BST.
+     *
+     * @param currNode
+     * @return
+     */
     private BinaryNode<Type> findPredecessor(BinaryNode<Type> currNode) {
+        // move our node to the left once
         BinaryNode<Type> node = currNode.getLeftChild();
+        // iterate while the node has a right child (finds the predecessor where the value is the greatest smaller value)
         while (node.getRightChild() != null) {
             node = node.getRightChild();
         }
+        // return the found predecessor node
         return node;
     }
 
+    /**
+     * The findSuccessor method is a private helper method that finds the successor node that should replace the node
+     * which we are trying to remove from the BST.
+     *
+     * @param currNode
+     * @return
+     */
     private BinaryNode<Type> findSuccessor(BinaryNode<Type> currNode) {
+        // move our node to the right once
         BinaryNode<Type> node = currNode.getRightChild();
+        // iterate while the node has a left child (finds the successor where the value is the smallest greater value)
         while (node.getLeftChild() != null) {
             node = node.getLeftChild();
         }
+        // return the found successor node
         return node;
     }
 
@@ -297,19 +354,38 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
      */
     @Override
     public ArrayList<Type> toArrayList() {
-        return null;
+        // if the size of the BST is zero or the root is null
+        if (this.size() == 0 || this.root == null) {
+            // return an empty array list
+            this.arrayList = new ArrayList<>();
+            return this.arrayList;
+        }
+        // create a new arrayList with the size of our BST
+        this.arrayList = new ArrayList<>(this.size());
+        // call private recursive toArrayList method on this BST
+        this.toArrayList(this.root, this.arrayList);
+        // return the new created arrayList
+        return this.arrayList;
     }
 
-    // delete this method once testing is done
-    public void display() {
-        displayHelper(this.root);
-    }
-
-    private void displayHelper(BinaryNode<Type> root) {
+    /**
+     * The toArrayList method is a private overloaded method that is recursively called to find values and returns a
+     * generic ArrayList
+     *
+     * @param root      - The node that we are currently looking at
+     * @param arrayList - The ArrayList that will be returned in the driver method
+     */
+    private void toArrayList(BinaryNode<Type> root, ArrayList<Type> arrayList) {
+        // if the current node that we're on does not equal null (which means it can possibly have children)
         if (root != null) {
-            displayHelper(root.getLeftChild());
-            System.out.println(root.getData());
-            displayHelper(root.getRightChild());
+            // recursive call on the left child of the node we're currently on
+            toArrayList(root.getLeftChild(), arrayList);
+            // add the data of the final node that we find after we break out of recursive call
+            if (root.getData() != null) {
+                arrayList.add(root.getData());
+            }
+            // recursive call on the right child of the node we're currently on
+            toArrayList(root.getRightChild(), arrayList);
         }
     }
 }

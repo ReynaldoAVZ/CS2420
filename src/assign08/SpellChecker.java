@@ -10,7 +10,7 @@ import java.util.Scanner;
  * Represents a "dictionary" of strings using a binary search tree and offers
  * methods for spell-checking documents.
  *
- * @author Aaron Wood
+ * @author Aaron Wood and Reynaldo Villarreal Zambrano and Mikhail Ahmed
  * @version 2023-10-26
  */
 public class SpellChecker {
@@ -21,7 +21,7 @@ public class SpellChecker {
 	 * Default constructor--creates empty dictionary.
 	 */
 	public SpellChecker() {
-		dictionary = new BinarySearchTree<String>();
+		this.dictionary = new BinarySearchTree<String>();
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class SpellChecker {
 	 * @param word - the String to be added to the dictionary
 	 */
 	public void addToDictionary(String word) {
-		// FILL IN
+		this.dictionary.add(word.toLowerCase());
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class SpellChecker {
 	 * @param word - the String to be removed from the dictionary
 	 */
 	public void removeFromDictionary(String word) {
-		// FILL IN
+		this.dictionary.remove(word.toLowerCase());
 	}
 
 	/**
@@ -71,12 +71,22 @@ public class SpellChecker {
 	 * @return a List of misspelled words
 	 */
 	public List<String> spellCheck(File documentFile) {
-
+		// create an ArrayList that will contain the incorrect words
+		List<String> incorrectWords = new ArrayList<String>();
+		// read a file and place words into a List
 		List<String> wordsToCheck = readFromFile(documentFile);
-
-		// FILL IN -- do not return null
-
-		return null;
+		// iterate through every String in the wordsToCheck list
+		for (String currString : wordsToCheck) {
+			// check if the current string is in the dictionary (using .contains) and if it does not, it means the word is mispelled
+			boolean result = this.dictionary.contains(currString.toLowerCase()); // TREE -> tree, Tree -> tree, TrEe -> tree
+			// if the result is true (which means the String was not in the dictionary)
+			if (result != true) {
+				// place the String in our incorrectWords list that we will return
+				incorrectWords.add(currString.toLowerCase());
+			}
+		}
+		// return the list of incorrect words
+		return incorrectWords;
 	}
 
 	/**
@@ -85,7 +95,9 @@ public class SpellChecker {
 	 * @param words - the List of Strings to be added to the dictionary
 	 */
 	private void buildDictionary(List<String> words) {
-		// FILL IN
+		for (String currString : words) {
+			this.dictionary.add(currString.toLowerCase());
+		}
 	}
 
 	/**
