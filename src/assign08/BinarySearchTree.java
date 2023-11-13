@@ -172,10 +172,7 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
      */
     @Override
     public boolean isEmpty() {
-        if (this.root == null && this.size == 0)
-            return true;
-
-        return false;
+        return size ==0;
     }
 
     /**
@@ -202,6 +199,8 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
     public boolean remove(Type item) {
         // checks if the item we're trying to remove is actually in the tree
         if (!this.contains(item))
+            return false;
+        if (this.isEmpty())
             return false;
         // call private recursive method that removes the item
         boolean result = this.remove(this.root, item);
@@ -264,6 +263,9 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
                 boolean result = this.remove(currNode.getRightChild(), successorVal);
                 // set the currNode value to be the successor value
                 currNode.setData(successorVal);
+                if (currNode.getRightChild().getData() == null) {
+                    currNode.setRightChild(null);
+                }
                 // return the result of the final recursive call
                 return result;
             }
@@ -277,6 +279,9 @@ public class BinarySearchTree<Type extends Comparable<? super Type>> implements 
                 boolean result = this.remove(currNode.getLeftChild(), predecessorVal);
                 // set the currNode value to be the predecessor value
                 currNode.setData(predecessorVal);
+                if (currNode.getLeftChild().getData() == null) {
+                    currNode.setLeftChild(null);
+                }
                 // return the result of the final recursive call
                 return result;
             }

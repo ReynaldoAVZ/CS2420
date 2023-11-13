@@ -135,6 +135,17 @@ private Collection<Integer> cOld;
     void isEmptyFalse() {
         assertFalse(BST.isEmpty());
     }
+
+    @Test
+    void isEmptyThird() {
+        BinarySearchTree<Integer> BSTTest = new BinarySearchTree<>();
+        BSTTest.add(10);
+        BSTTest.add(11);
+        assertFalse(BSTTest.isEmpty());
+        BSTTest.remove(10);
+        BSTTest.remove(11);
+        assertTrue(BSTTest.isEmpty());
+    }
     @Test
     void last() {
         Integer result = BST.last();
@@ -144,9 +155,9 @@ private Collection<Integer> cOld;
     @Test
     void remove() {
         // ask tutors about why remove 7 leaves a null object in our BST
-        boolean result = BST.remove(7);
+        boolean result = BST.remove(1);
         assertTrue(result);
-        Integer[] real = new Integer[]{-3, -2, -1, 1, 2, 3, 4, 5, 6, 8, 9, 11, 12, 13};
+        Integer[] real = new Integer[]{-3, -2, -1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13};
         ArrayList<Integer> output = BST.toArrayList();
         assertArrayEquals(real, output.toArray());
     }
@@ -169,6 +180,12 @@ private Collection<Integer> cOld;
         boolean result = BST.removeAll(cNew);
         assertFalse(result);
         assertEquals(15, BST.size());
+    }
+
+    @Test
+    void removeRoot() {
+        boolean result = BST.remove(5);
+        assertTrue(result);
     }
     @Test
     void size() {
