@@ -10,7 +10,7 @@ public class StudentGoodHash {
      * table.
      *
      * @author Aaron Wood and Reynaldo Villarreal Zambrano and Mikhail Ahmed
-     * @version 2023-11-02
+     * @version 2023-11-16
      */
     private int uid;
     private String firstName;
@@ -73,7 +73,6 @@ public class StudentGoodHash {
     }
 
     public int hashCode() {
-
-        return (this.firstName.length() + this.lastName.length()) * this.uid;
+        return this.getUid();
     }
 }

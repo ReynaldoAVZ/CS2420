@@ -11,7 +11,7 @@ public class StudentMediumHash {
      * table.
      *
      * @author Aaron Wood and Reynaldo Villarreal Zambrano and Mikhail Ahmed
-     * @version 2023-11-02
+     * @version 2023-11-16
      */
     private int uid;
     private String firstName;
@@ -74,6 +74,6 @@ public class StudentMediumHash {
     }
 
     public int hashCode() {
-        return this.getUid();
+        return (this.firstName.length() + this.lastName.length()) * this.uid;
     }
 }

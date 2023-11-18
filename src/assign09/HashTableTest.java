@@ -5,6 +5,11 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The HashTableTest class is a testing clas for our HashTable class as well as StudentBadHash, StudentMediumHash, and StudentGoodHash.
+ * @author Reynaldo Villarreal Zambrano and Mikhail Ahmed
+ * @version 2023-11-16
+ */
 class HashTableTest {
 
     HashTable<Integer, String> table;
