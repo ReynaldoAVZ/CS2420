@@ -9,7 +9,7 @@ import java.text.DecimalFormat;
  * table.
  *
  * @author Aaron Wood and Reynaldo Villarreal Zambrano and Mikhail Ahmed
- * @version 2023-11-02
+ * @version 2023-11-16
  */
 public class StudentBadHash {
 
@@ -74,6 +74,6 @@ public class StudentBadHash {
 	}
 
 	public int hashCode() {
-		return 0;
+		return 1;
 	}
 }
